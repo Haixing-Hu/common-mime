@@ -1,0 +1,264 @@
+#LyX 1.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 221
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme ae
+\graphics default
+\paperfontsize 11
+\spacing single 
+\papersize a4paper
+\paperpackage a4wide
+\use_geometry 0
+\use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language german
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Author
+
+Timo Stuelten
+\layout Title
+
+A test document
+\layout Date
+
+2003-11-22
+\layout Abstract
+
+Some text about the content of this document.
+\layout Standard
+
+
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset FloatList figure
+
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset FloatList table
+
+\end_inset 
+
+
+\layout Section
+
+First
+\begin_inset LatexCommand \index{First}
+
+\end_inset 
+
+ section
+\begin_inset LatexCommand \index{section}
+
+\end_inset 
+
+
+\layout Standard
+
+Some text
+\layout Subsection
+
+First
+\begin_inset LatexCommand \index{First}
+
+\end_inset 
+
+ subsection
+\begin_inset LatexCommand \index{subsection}
+
+\end_inset 
+
+
+\layout Standard
+
+And again some text.
+\begin_inset LatexCommand \index{text, A lot of }
+
+\end_inset 
+
+
+\layout Standard
+
+A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ 
+\begin_inset LatexCommand \index{text}
+
+\end_inset 
+
+
+\layout Subsection
+
+
+\begin_inset LatexCommand \index{Second}
+
+\end_inset 
+
+Second subsection
+\begin_inset LatexCommand \index{subsection}
+
+\end_inset 
+
+
+\layout Standard
+
+A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot
+\begin_inset LatexCommand \index{text, A lot of }
+
+\end_inset 
+
+ of text
+\begin_inset LatexCommand \index{text}
+
+\end_inset 
+
+.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ 
+\begin_inset LatexCommand \index{text, A lot of }
+
+\end_inset 
+
+
+\layout Subsubsection
+
+First
+\begin_inset LatexCommand \index{First}
+
+\end_inset 
+
+ subsubsection
+\begin_inset LatexCommand \index{subsubsection}
+
+\end_inset 
+
+
+\layout Standard
+
+A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ 
+\begin_inset LatexCommand \index{text, A lot of }
+
+\end_inset 
+
+
+\layout Section
+
+
+\begin_inset LatexCommand \index{Second}
+
+\end_inset 
+
+Second section
+\begin_inset LatexCommand \index{section}
+
+\end_inset 
+
+
+\layout Standard
+
+A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+ A lot of text.
+\begin_inset LatexCommand \index{text, A lot of }
+
+\end_inset 
+
+ 
+\layout Standard
+
+
+\begin_inset LatexCommand \printindex{}
+
+\end_inset 
+
+
+\the_end

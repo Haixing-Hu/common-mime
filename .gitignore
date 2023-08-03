@@ -1,0 +1,36 @@
+# Eclipse Project
+.classpath
+.project
+.settings
+/target
+
+# IDEA Project
+workspace.xml
+tasks.xml
+.idea
+*.iml
+.attach_pid*
+
+# Maven versions plugin
+pom.xml.versionsBackup
+
+# maven flatten plugin
+.flattened-pom.xml
+
+# Log Files
+*.log
+
+# System Cache Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Embedded MySQL database
+.mysqltmp
+
+# Python files
+__pycache__
+*.pyc
+
+
+.attach_pid*
