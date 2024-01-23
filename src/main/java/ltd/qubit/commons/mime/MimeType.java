@@ -247,9 +247,10 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     if (obj == null) {
       return false;
     }
-    if (!(obj instanceof final MimeType other)) {
+    if (!(obj instanceof MimeType)) {
       return false;
     }
+    final MimeType other = (MimeType) obj;
     return name.equals(other.name);
   }
 
