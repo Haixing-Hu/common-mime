@@ -1,0 +1,22 @@
+digraph "common-mime" {
+  node [shape="box",style="rounded",fontname="Helvetica",fontsize="14"]
+  edge [fontsize="10",fontname="Helvetica"]
+
+  // Node Definitions:
+  "ltd.qubit:common-java:jar"[label=<<font point-size="10">ltd.qubit</font><br/>common-java>]
+  "ltd.qubit:common-annotation:jar"[label=<<font point-size="10">ltd.qubit</font><br/>common-annotation>]
+  "ltd.qubit:common-mime:jar"[label=<<font point-size="10">ltd.qubit</font><br/>common-mime>]
+  "ltd.qubit:common-unit-test:jar"[label=<<font point-size="10">ltd.qubit</font><br/>common-unit-test<font point-size="10"><br/>(test)</font>>]
+  "ltd.qubit:common-random:jar"[label=<<font point-size="10">ltd.qubit</font><br/>common-random<font point-size="10"><br/>(test)</font>>]
+
+  // Edge Definitions:
+  "ltd.qubit:common-java:jar" -> "ltd.qubit:common-annotation:jar"
+  "ltd.qubit:common-mime:jar" -> "ltd.qubit:common-java:jar"
+  "ltd.qubit:common-unit-test:jar" -> "ltd.qubit:common-annotation:jar"[style="dotted"]
+  "ltd.qubit:common-unit-test:jar" -> "ltd.qubit:common-java:jar"[style="dotted"]
+  "ltd.qubit:common-unit-test:jar" -> "ltd.qubit:common-random:jar"[style="dotted"]
+  "ltd.qubit:common-mime:jar" -> "ltd.qubit:common-unit-test:jar"
+  "ltd.qubit:common-random:jar" -> "ltd.qubit:common-annotation:jar"[style="dotted"]
+  "ltd.qubit:common-random:jar" -> "ltd.qubit:common-java:jar"[style="dotted"]
+  "ltd.qubit:common-mime:jar" -> "ltd.qubit:common-random:jar"
+}
