@@ -1,8 +1,8 @@
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~
-  ~    Copyright (c) 2022 - 2023.
-  ~    Haixing Hu, Qubit Co. Ltd.
+  ~    Copyright (c) 2017 - 2022.
+  ~    Nanjing Smart Medical Investment Operation Service Co. Ltd.
   ~
   ~    All rights reserved.
   ~
@@ -15,7 +15,7 @@
     </encoder>
   </appender>
   <!-- Control the log level -->
-  <logger name="ltd.qubit.commons.mime" level="TRACE"/>
+  <logger name="ltd.qubit.mime" level="DEBUG"/>
   <root level="WARN">
     <appender-ref ref="STDOUT" />
   </root>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~
+  ~    Copyright (c) 2016.  Haixing Hu @ Qubit Technology Co. Ltd.
+  ~
+  ~    All rights reserved.
+  ~
+  -->
+
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-tex">
+    <comment>TeX document</comment>
+    <comment xml:lang="be@latin">Dakument TeX</comment>
+    <comment xml:lang="bg">Документ — TeX</comment>
+    <comment xml:lang="ca">document TeX</comment>
+    <comment xml:lang="cs">Dokument TeX</comment>
+    <comment xml:lang="da">TeX-dokument</comment>
+    <comment xml:lang="de">TeX-Dokument</comment>
+    <comment xml:lang="el">έγγραφο TeX</comment>
+    <comment xml:lang="en_GB">TeX document</comment>
+    <comment xml:lang="eo">TeX-dokumento</comment>
+    <comment xml:lang="es">documento TeX</comment>
+    <comment xml:lang="eu">TeX dokumentua</comment>
+    <comment xml:lang="fi">TeX-asiakirja</comment>
+    <comment xml:lang="fr">document TeX</comment>
+    <comment xml:lang="ga">cáipéis TeX</comment>
+    <comment xml:lang="hu">TeX-dokumentum</comment>
+    <comment xml:lang="id">Dokumen TeX</comment>
+    <comment xml:lang="it">Documento TeX</comment>
+    <comment xml:lang="ja">TeX ドキュメント</comment>
+    <comment xml:lang="ko">TeX 문서</comment>
+    <comment xml:lang="lt">TeX dokumentas</comment>
+    <comment xml:lang="lv">TeX dokuments</comment>
+    <comment xml:lang="ms">Dokumen TeX</comment>
+    <comment xml:lang="nb">TeX-dokument</comment>
+    <comment xml:lang="nl">TeX-document</comment>
+    <comment xml:lang="nn">TeX-dokument</comment>
+    <comment xml:lang="pl">Dokument TeX</comment>
+    <comment xml:lang="pt">documento TeX</comment>
+    <comment xml:lang="pt_BR">Documento TeX</comment>
+    <comment xml:lang="ru">документ TeX</comment>
+    <comment xml:lang="sq">Dokument TeX</comment>
+    <comment xml:lang="sr">ТеХ документ</comment>
+    <comment xml:lang="sv">TeX-dokument</comment>
+    <comment xml:lang="uk">Документ TeX</comment>
+    <comment xml:lang="vi">Tài liệu TeX</comment>
+    <comment xml:lang="zh_CN">TeX 文档</comment>
+    <comment xml:lang="zh_TW">TeX 文件</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.tex"/>
+    <glob pattern="*.ltx"/>
+    <glob pattern="*.sty"/>
+    <glob pattern="*.cls"/>
+    <glob pattern="*.dtx"/>
+    <glob pattern="*.ins"/>
+    <glob pattern="*.latex"/>
+    <magic priority="10">
+      <match value="%" type="string" offset="0"/>
+    </magic>
+    <magic priority="50">
+      <match value="documentclass" type="string" offset="1"/>
+    </magic>
+	<magic priority="100">
+	  <match value="\\documentclass" type="string" offset="0:256" />
+	</magic>
+  </mime-type>
+  <mime-type type="application/x-sharedlib">
+    <comment>shared library</comment>
+    <comment xml:lang="az">bölüşülmüş kitabxana</comment>
+    <comment xml:lang="be@latin">supolnaja biblijateka</comment>
+    <comment xml:lang="bg">Споделена библиотека</comment>
+    <comment xml:lang="ca">biblioteca compartida</comment>
+    <comment xml:lang="cs">Sdílená knihovna</comment>
+    <comment xml:lang="cy">llyfrgell wedi ei rhannu</comment>
+    <comment xml:lang="da">delt bibliotek</comment>
+    <comment xml:lang="de">Gemeinsame Bibliothek</comment>
+    <comment xml:lang="el">αρχείο κοινόχρηστης βιβλιοθήκης</comment>
+    <comment xml:lang="en_GB">shared library</comment>
+    <comment xml:lang="eo">dinamike bindebla biblioteko</comment>
+    <comment xml:lang="es">biblioteca compartida</comment>
+    <comment xml:lang="eu">partekatutako liburutegia</comment>
+    <comment xml:lang="fi">jaettu kirjasto</comment>
+    <comment xml:lang="fr">bibliothèque partagée</comment>
+    <comment xml:lang="ga">comhleabharlann</comment>
+    <comment xml:lang="hu">osztott programkönyvtár</comment>
+    <comment xml:lang="id">pustaka bersama</comment>
+    <comment xml:lang="it">Libreria condivisa</comment>
+    <comment xml:lang="ja">共有ライブラリ</comment>
+    <comment xml:lang="ko">공유 라이브러리</comment>
+    <comment xml:lang="lt">bendroji biblioteka</comment>
+    <comment xml:lang="lv">koplietotā bibliotēka</comment>
+    <comment xml:lang="ms">Pustaka terkongsi</comment>
+    <comment xml:lang="nb">delt bibliotek</comment>
+    <comment xml:lang="nl">gedeelde bibliotheek</comment>
+    <comment xml:lang="nn">delt bibliotek</comment>
+    <comment xml:lang="pl">Biblioteka współdzielona</comment>
+    <comment xml:lang="pt">biblioteca partilhada</comment>
+    <comment xml:lang="pt_BR">biblioteca compartilhada</comment>
+    <comment xml:lang="ru">разделяемая библиотека</comment>
+    <comment xml:lang="sq">Librari e përbashkët</comment>
+    <comment xml:lang="sr">дељена библиотека</comment>
+    <comment xml:lang="sv">delat bibliotek</comment>
+    <comment xml:lang="uk">спільна бібліотека</comment>
+    <comment xml:lang="vi">thư viện dùng chung</comment>
+    <comment xml:lang="zh_CN">共享库</comment>
+    <comment xml:lang="zh_TW">分享函式庫</comment>
+    <magic priority="50">
+      <match value="\177ELF" type="string" offset="0">
+        <match value="1" type="byte" offset="5">
+          <match value="3" type="little16" offset="16"/>
+        </match>
+      </match>
+      <match value="\177ELF" type="string" offset="0">
+        <match value="2" type="byte" offset="5">
+          <match value="3" type="big16" offset="16"/>
+        </match>
+      </match>
+      <match value="0603" type="little16" offset="0">
+        <match value="020000" type="little16" offset="22" mask="030000"/>
+      </match>
+      <match value="\177ELF            \003" type="string" offset="0" mask="0xffffffff000000000000000000000000ff"/>
+    </magic>
+    <glob pattern="*.so"/>
+  </mime-type>
+</mime-info>
+
