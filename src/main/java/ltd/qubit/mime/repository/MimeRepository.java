@@ -430,7 +430,7 @@ public class MimeRepository implements Serializable {
   }
 
   public MimeType get(final String name) {
-    return mimeNameMap.get(name.toLowerCase());
+    return mimeNameMap.get(normalizeName(name));
   }
 
   public List<MimeType> getAll() {
@@ -697,21 +697,22 @@ public class MimeRepository implements Serializable {
   private void addMimeType(final MimeType mime) {
     // put the name to the m_mimeNameMap
     final String name = mime.getName();
-    if (mimeNameMap.containsKey(name)) {
+    final String normalizedName = normalizeName(name);
+    if (mimeNameMap.containsKey(normalizedName)) {
       logger.warn("The MIME-type name {} already existed. "
           + "The newer will override the older.", name);
     }
     logger.trace("Add the MIME-Type name: {}", name);
-    mimeNameMap.put(name, mime);
+    mimeNameMap.put(normalizedName, mime);
     // add all aliases of the mime to the newMimeNameMap
-    for (String alias : mime.getAliases()) {
-      alias = alias.toLowerCase();
-      if (mimeNameMap.containsKey(alias)) {
+    for (final String alias : mime.getAliases()) {
+      final String normalizedAlias = alias.toLowerCase();
+      if (mimeNameMap.containsKey(normalizedAlias)) {
         logger.warn("The MIME-type alias {} already existed. "
             + "The newer will override the older.", alias);
       }
       logger.trace("Add the MIME-Type alias: {}", alias);
-      mimeNameMap.put(alias, mime);
+      mimeNameMap.put(normalizedAlias, mime);
     }
     // add the glob pattern to the map
     for (final MimeGlob glob : mime.getGlobs()) {
@@ -745,7 +746,7 @@ public class MimeRepository implements Serializable {
 
   public void fromXml(final Element root) throws XmlException {
     // first deserialize the XML and get a name map of MIME-types
-    logger.trace("Deserialize MimeRepository from XML ...");
+    logger.info("Deserialize MimeRepository from XML ...");
     DomUtils.checkNode(root, ROOT_NODE);
     final NodeList nodeList = root.getChildNodes();
     if (nodeList.getLength() == 0) {
@@ -761,7 +762,7 @@ public class MimeRepository implements Serializable {
       }
       // deserialize a new MIME-type
       final MimeType mime = MimeTypeXmlSerializer.INSTANCE.deserialize((Element)node);
-      logger.trace("Parsed a MIME-Type {}", mime);
+      logger.info("Parsed a MIME-Type {}", mime.getName());
       // add to the newMimeList
       temp.mimeList.add(mime);
       // collect glob information
@@ -772,7 +773,7 @@ public class MimeRepository implements Serializable {
     temp.alwaysCheckMagic = config.getBoolean(PROPERTY_CHECK_MAGIC, DEFAULT_CHECK_MAGIC);
     // then swap this with temp;
     swap(temp);
-    logger.trace("Successfully deserialize MimeRepository from XML.");
+    logger.info("Successfully deserialize MimeRepository from XML.");
   }
 
   public Element toXml(final Document doc) throws XmlException {
@@ -784,6 +785,10 @@ public class MimeRepository implements Serializable {
     }
     logger.trace("Successfully serialize MimeRepository into XML.");
     return result;
+  }
+
+  protected String normalizeName(final String name) {
+    return name.toLowerCase();
   }
 
   @Override

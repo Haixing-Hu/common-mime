@@ -32,7 +32,7 @@
   </property>
 
   <property name="ltd.qubit.mime.repository.MimeRepository.database">
-    <value>mimetype-database.xml</value>
+    <value>freedesktop.org-v2.4.xml</value>
     <description>Specifies the resource name of the MIME-type database. It could
       be either
       a string (which indicates a Java resource name), a URL, or a local file system

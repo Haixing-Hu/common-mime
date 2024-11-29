@@ -36,7 +36,7 @@ import static ltd.qubit.mime.repository.MimeConfig.PROPERTY_RESOURCE;
  */
 public class MimeRepositoryTest {
 
-  static class TestData {
+  public static class TestData {
     String   fileName;
     String   mimeName;
     String[] detectByName;
@@ -52,7 +52,8 @@ public class MimeRepositoryTest {
       this.detectByBoth = detectByBoth;
     }
 
-    static boolean matches(final List<MimeType> mimeList, final String[] mimeNameList) {
+    static boolean matches(final MimeRepository repository,
+        final List<MimeType> mimeList, final String[] mimeNameList) {
       if (mimeNameList == null) {
         if (mimeList == null) {
           return true;
@@ -80,7 +81,6 @@ public class MimeRepositoryTest {
             + "\n" + ArrayUtils.toString(mimeNameList));
         return false;
       }
-      final MimeRepository repository = MimeRepository.getInstance();
       for (int i = 0; i < mimeNameList.length; ++i) {
         final MimeType mime = repository.get(mimeNameList[i]);
         if (! mimeList.contains(mime)) {
@@ -188,7 +188,7 @@ public class MimeRepositoryTest {
 
     new TestData("test.ogg",
         "audio/x-vorbis+ogg",
-        new String[]{"audio/ogg", "audio/x-vorbis+ogg", "audio/x-flac+ogg",
+        new String[]{"audio/ogg", "video/ogg", "audio/x-vorbis+ogg", "audio/x-flac+ogg",
         "audio/x-speex+ogg", "video/x-theora+ogg"},
         new String[]{"audio/x-vorbis+ogg"},
         new String[]{"audio/x-vorbis+ogg"}),
@@ -214,7 +214,7 @@ public class MimeRepositoryTest {
     new TestData("test.tex",
         "text/x-tex",
         new String[]{"text/x-tex"},
-        new String[]{"text/x-tex"},
+        new String[]{"text/x-tex", "text/x-matlab"},
         new String[]{"text/x-tex"}),
 
     new TestData("test.txt",
@@ -256,7 +256,7 @@ public class MimeRepositoryTest {
     new TestData("test.xls",
         "application/vnd.ms-excel",
         new String[]{"application/vnd.ms-excel"},
-        new String[]{"application/x-ole-storage"},
+        new String[]{"application/vnd.ms-excel"},
         new String[]{"application/vnd.ms-excel"}),
 
     new TestData("test.xps",
@@ -288,30 +288,26 @@ public class MimeRepositoryTest {
         new String[]{"application/zip"},
         new String[]{"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}),
 
-    new TestData("test.docm",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        new String[]{"application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
+    new TestData("test.docm", "application/vnd.ms-word.document.macroEnabled.12",
+        new String[]{"application/vnd.ms-word.document.macroEnabled.12"},
         new String[]{"application/zip"},
-        new String[]{"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}),
+        new String[]{"application/vnd.ms-word.document.macroEnabled.12"}),
 
-    new TestData("test.dotx",
-        "application/msword-template",
-        null,
+    new TestData("test.dotx", "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
+        new String[]{"application/vnd.openxmlformats-officedocument.wordprocessingml.template"},
         new String[]{"application/zip"},
-        new String[]{"application/zip"}),
+        new String[]{"application/vnd.openxmlformats-officedocument.wordprocessingml.template"}),
 
-    new TestData("test.xlsx",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    new TestData("test.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         new String[]{"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
         new String[]{"application/zip"},
         new String[]{"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),
 
           // FIXME: the PSD cannot be detected by magic
-//    new TestData("large_image.psd",
-//            "image/vnd.adobe.photoshop",
-//            new String[]{ "image/vnd.adobe.photoshop" },
-//            new String[]{ "image/vnd.adobe.photoshop" },
-//            new String[]{ "image/vnd.adobe.photoshop" })
+   new TestData("large_image.psd", "image/vnd.adobe.photoshop",
+           new String[]{ "image/vnd.adobe.photoshop" },
+           null,
+           new String[]{ "image/vnd.adobe.photoshop" }),
   };
 
   private MimeRepository repository;
@@ -365,7 +361,7 @@ public class MimeRepositoryTest {
       System.out.println("Detecting MIME by filename ...");
       mimeList = repository.detectByFilename(file.getAbsolutePath());
       printMimeList(mimeList);
-      assertTrue(TestData.matches(mimeList, TEST_DATA[i].detectByName));
+      assertTrue(TestData.matches(repository, mimeList, TEST_DATA[i].detectByName));
       System.out.println("Success.");
 
       // test detection by file magic only
@@ -382,7 +378,7 @@ public class MimeRepositoryTest {
         System.out.println("The actual MIME list is:");
         printMimeList(mimeList);
 
-        assertTrue(TestData.matches(mimeList, TEST_DATA[i].detectByMagic));
+        assertTrue(TestData.matches(repository, mimeList, TEST_DATA[i].detectByMagic));
 
       } finally {
         if (fis != null) {
@@ -406,7 +402,7 @@ public class MimeRepositoryTest {
         }
         mimeList = repository.detect(file.getAbsolutePath(), buffer, nBytes, false);
         printMimeList(mimeList);
-        assertTrue(TestData.matches(mimeList, TEST_DATA[i].detectByBoth));
+        assertTrue(TestData.matches(repository, mimeList, TEST_DATA[i].detectByBoth));
       } finally {
         if (fis != null) {
           try {
