@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//    Copyright (c) 2017 - 2024.
-//    Nanjing Smart Medical Investment Operation Service Co. Ltd.
+//    Copyright (c) 2022 - 2024.
+//    Haixing Hu, Qubit Co. Ltd.
 //
 //    All rights reserved.
 //
@@ -212,7 +212,7 @@ public class MimeRepository implements Serializable {
    *
    * @see #PROPERTY_SERIALIZATION
    */
-  public static final String DEFAULT_SERIALIZATION = "${user.home}/.njzhyl/MimeRepository.ser";
+  public static final String DEFAULT_SERIALIZATION = "${user.home}/.qubit/MimeRepository.ser";
 
   /**
    * The value of this property specifies the resource name of the XML format
@@ -233,7 +233,7 @@ public class MimeRepository implements Serializable {
    * <td>1</td>
    * <td>the resource name of the XML format MIME-type database file.</td>
    * <td>no</td>
-   * <td>${user.home}/.njzhyl/MimeTypeRepository.ser</td>
+   * <td>${user.home}/.qubit/MimeTypeRepository.ser</td>
    * <td></td>
    * </tr>
    * </table>

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//    Copyright (c) 2017 - 2024.
-//    Nanjing Smart Medical Investment Operation Service Co. Ltd.
+//    Copyright (c) 2022 - 2024.
+//    Haixing Hu, Qubit Co. Ltd.
 //
 //    All rights reserved.
 //
@@ -36,24 +36,39 @@ import static ltd.qubit.commons.lang.Argument.requireNonNull;
  *
  * @author Haixing Hu
  */
+@SuppressWarnings("overloads")
 public abstract class AbstractMimeDetector implements MimeDetector {
 
   protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  @Nullable
+  protected boolean alwaysCheckMagicByDefault = false;
+
   @Override
-  public final String detectByFilename(@Nonnull final File file) {
-    requireNonNull("file", file);
-    logger.debug("Detecting the MIME-type of the file from its filename extension: {}", file);
-    final String filename = FilenameUtils.getFilename(file);
+  public boolean isAlwaysCheckMagicByDefault() {
+    return alwaysCheckMagicByDefault;
+  }
+
+  @Override
+  public void setAlwaysCheckMagicByDefault(final boolean alwaysCheckMagicByDefault) {
+    this.alwaysCheckMagicByDefault = alwaysCheckMagicByDefault;
+  }
+
+  interface GetFilenameFunctor<T> {
+    String apply(T arg);
+  }
+
+  private <T> String detectByFilenameImpl(final T arg,
+      final GetFilenameFunctor<T> getFilenameFunctor) {
+    logger.debug("Detecting the MIME-type of the file from its filename extension: {}", arg);
+    final String filename = getFilenameFunctor.apply(arg);
     if (StringUtils.isEmpty(filename)) {
       logger.error("No MIME-type detected from the filename extension since the "
-          + "filename of the path is empty: {}", file);
+          + "filename of the file is empty: {}", arg);
       return null;
     }
     final List<String> candidates = guessFromFilename(filename);
     if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the filename extension of the file: {}", file);
+      logger.error("No MIME-type detected from the filename extension of the file: {}", arg);
       return null;
     } else {
       logger.debug("All possible MIME-types detected from the filename extension are: {}", candidates);
@@ -61,96 +76,58 @@ public abstract class AbstractMimeDetector implements MimeDetector {
       logger.debug("Use the first MIME-type detected from the filename extension: {}", result);
       return result;
     }
+  }
+
+  @Nullable
+  @Override
+  public final String detectByFilename(@Nonnull final File file) {
+    requireNonNull("file", file);
+    return detectByFilenameImpl(file, FilenameUtils::getFilename);
   }
 
   @Nullable
   @Override
   public final String detectByFilename(@Nonnull final Path path) {
     requireNonNull("path", path);
-    logger.debug("Detecting the MIME-type of the file from its filename extension: {}", path);
-    final String filename = FilenameUtils.getFilename(path);
-    if (StringUtils.isEmpty(filename)) {
-      logger.error("No MIME-type detected from the filename extension since the "
-          + "filename of the path is empty: {}", path);
-      return null;
-    }
-    final List<String> candidates = guessFromFilename(filename);
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the filename extension of the file: {}", path);
-      return null;
-    } else {
-      logger.debug("All possible MIME-types detected from the filename extension are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
+    return detectByFilenameImpl(path, FilenameUtils::getFilename);
   }
 
   @Nullable
   @Override
   public final String detectByFilename(@Nonnull final String path) {
     requireNonNull("path", path);
-    logger.debug("Detecting the MIME-type of the file from its filename extension: {}", path);
-    final String filename = FilenameUtils.getFilenameFromPath(path);
-    if (StringUtils.isEmpty(filename)) {
-      logger.error("No MIME-type detected from the filename extension since the "
-          + "filename of the path is empty: {}", path);
-      return null;
-    }
-    final List<String> candidates = guessFromFilename(filename);
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the filename extension of the file: {}", path);
-      return null;
-    } else {
-      logger.debug("All possible MIME-types detected from the filename extension are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
+    return detectByFilenameImpl(path, FilenameUtils::getFilenameFromPath);
   }
 
   @Nullable
   @Override
   public final String detectByFilename(@Nonnull final URL url) {
     requireNonNull("url", url);
-    logger.debug("Detecting the MIME-type of the file from its filename extension: {}", url);
-    final String filename = FilenameUtils.getFilename(url);
-    if (StringUtils.isEmpty(filename)) {
-      logger.error("No MIME-type detected from the filename extension since the "
-          + "filename of the path is empty: {}", url);
-      return null;
-    }
-    final List<String> candidates = guessFromFilename(filename);
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the filename extension of the file: {}", url);
-      return null;
-    } else {
-      logger.debug("All possible MIME-types detected from the filename extension are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
+    return detectByFilenameImpl(url, FilenameUtils::getFilename);
   }
 
   @Nullable
   @Override
   public final String detectByFilename(@Nonnull final URI uri) {
     requireNonNull("uri", uri);
-    logger.debug("Detecting the MIME-type of the file from its filename extension: {}", uri);
-    final String filename = FilenameUtils.getFilename(uri);
-    if (StringUtils.isEmpty(filename)) {
-      logger.error("No MIME-type detected from the filename extension since the "
-          + "filename of the path is empty: {}", uri);
-      return null;
-    }
-    final List<String> candidates = guessFromFilename(filename);
+    return detectByFilenameImpl(uri, FilenameUtils::getFilename);
+  }
+
+  interface GuessFromContentFunctor<T> {
+    List<String> apply(T arg) throws IOException;
+  }
+
+  private <T> String detectByContentImpl(final T arg,
+      final GuessFromContentFunctor<T> guessFromContentFunctor) throws IOException {
+    logger.debug("Detecting the MIME-type of the file from its content: {}", arg);
+    final List<String> candidates = guessFromContentFunctor.apply(arg);
     if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the filename extension of the file: {}", uri);
+      logger.error("No MIME-type detected from the content of the file: {}", arg);
       return null;
     } else {
-      logger.debug("All possible MIME-types detected from the filename extension are: {}", candidates);
+      logger.debug("All possible MIME-types detected from the content are: {}", candidates);
       final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the filename extension: {}", result);
+      logger.debug("Use the first MIME-type detected from the content: {}", result);
       return result;
     }
   }
@@ -159,34 +136,14 @@ public abstract class AbstractMimeDetector implements MimeDetector {
   @Override
   public final String detectByContent(@Nonnull final File file) throws IOException {
     requireNonNull("file", file);
-    logger.debug("Detecting the MIME-type of the file from its content: {}", file);
-    final List<String> candidates = guessFromContent(file);
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the content of the file: {}", file);
-      return null;
-    } else {
-      logger.debug("All possible MIME-types detected from the content are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the content: {}", result);
-      return result;
-    }
+    return detectByContentImpl(file, (File f) -> this.guessFromContent(f));
   }
 
   @Nullable
   @Override
   public final String detectByContent(@Nonnull final Path path) throws IOException {
     requireNonNull("path", path);
-    logger.debug("Detecting the MIME-type of the file from its content: {}", path);
-    final List<String> candidates = guessFromContent(path);
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the content of the file: {}", path);
-      return null;
-    } else {
-      logger.debug("All possible MIME-types detected from the content are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the content: {}", result);
-      return result;
-    }
+    return detectByContentImpl(path, (Path p) -> this.guessFromContent(p));
   }
 
   @Nullable
@@ -194,17 +151,7 @@ public abstract class AbstractMimeDetector implements MimeDetector {
   public final String detectByContent(@Nonnull final InputStream input)
       throws IOException {
     requireNonNull("input", input);
-    logger.debug("Detecting the MIME-type of the file from its content: {}", input);
-    final List<String> candidates = guessFromContent(input);
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the content of the file: {}", input);
-      return null;
-    } else {
-      logger.debug("All possible MIME-types detected from the content are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the content: {}", result);
-      return result;
-    }
+    return detectByContentImpl(input, (InputStream i) -> this.guessFromContent(i));
   }
 
   @Nullable
@@ -221,17 +168,19 @@ public abstract class AbstractMimeDetector implements MimeDetector {
     return candidates.isEmpty() ? null : candidates.get(0);
   }
 
-  @Nullable
-  @Override
-  public final String detectByContent(@Nonnull final URL url) throws IOException {
-    requireNonNull("url", url);
-    logger.debug("Detecting the MIME-type of the file from its content: {}", url);
+  interface OpenStreamFunctor<T> {
+    InputStream apply(T arg) throws IOException;
+  }
+
+  private <T> String detectByContentImpl(final T arg,
+      final OpenStreamFunctor<T> openStreamFunctor) throws IOException {
+    logger.debug("Detecting the MIME-type of the file from its content: {}", arg);
     final List<String> candidates;
-    try (final InputStream in = UrlUtils.openStream(url)) {
+    try (final InputStream in = openStreamFunctor.apply(arg)) {
       candidates = guessFromContent(in);
     }
     if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the content of the file: {}", url);
+      logger.error("No MIME-type detected from the content of the file: {}", arg);
       return null;
     } else {
       logger.debug("All possible MIME-types detected from the content are: {}", candidates);
@@ -239,119 +188,67 @@ public abstract class AbstractMimeDetector implements MimeDetector {
       logger.debug("Use the first MIME-type detected from the content: {}", result);
       return result;
     }
+  }
+
+  @Nullable
+  @Override
+  public final String detectByContent(@Nonnull final URL url) throws IOException {
+    requireNonNull("url", url);
+    return detectByContentImpl(url, (URL u) -> UrlUtils.openStream(u));
   }
 
   @Nullable
   @Override
   public final String detectByContent(@Nonnull final URI uri) throws IOException {
     requireNonNull("url", uri);
-    logger.debug("Detecting the MIME-type of the file from its content: {}", uri);
-    final List<String> candidates;
-    try (final InputStream in = UrlUtils.openStream(uri)) {
-      candidates = guessFromContent(in);
-    }
-    if (candidates.isEmpty()) {
-      logger.error("No MIME-type detected from the content of the file: {}", uri);
-      return null;
+    return detectByContentImpl(uri, (URI u) -> UrlUtils.openStream(u));
+  }
+
+  private <T> String detectImpl(final T arg, @Nullable final String filename,
+      final boolean alwaysCheckMagic,
+      final GetFilenameFunctor<T> getFilenameFunctor,
+      final GuessFromContentFunctor<T> guessFromContentFunctor) throws IOException {
+    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {}", arg);
+    final String theFilename = (filename != null ? filename : getFilenameFunctor.apply(arg));
+    final List<String> fromExtension;
+    if (StringUtils.isEmpty(theFilename)) {
+      fromExtension = Collections.emptyList();
     } else {
-      logger.debug("All possible MIME-types detected from the content are: {}", candidates);
-      final String result = candidates.get(0);
-      logger.debug("Use the first MIME-type detected from the content: {}", result);
+      fromExtension = guessFromFilename(theFilename);
+    }
+    // if there is only one candidate, and we don't need to always check the
+    // file magic, then return the only candidate directly.
+    if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
+      logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
+      final String result = fromExtension.get(0);
+      logger.debug("Use the MIME-type detected from the filename extension: {}", result);
       return result;
     }
+    // try to guess the MIME-type from the file content
+    final List<String> fromContent = guessFromContentFunctor.apply(arg);
+    // now we try to combine the results from the filename extension and the
+    // file content.
+    return mergeResults(fromExtension, fromContent);
   }
 
   @Nullable
   @Override
-  public String detect(@Nonnull final File file) throws IOException {
-    return detect(file, false);
-  }
-
-  @Nullable
-  @Override
-  public String detect(@Nonnull final Path path) throws IOException {
-    return detect(path, false);
-  }
-
-  @Nullable
-  @Override
-  public String detect(@Nonnull final URL url) throws IOException {
-    return detect(url, false);
-  }
-
-  @Nullable
-  @Override
-  public String detect(@Nonnull final URI uri) throws IOException {
-    return detect(uri, false);
-  }
-
-  @Nullable
-  @Override
-  public String detect(@Nonnull final InputStream input, @Nullable final String filename)
-      throws IOException {
-    return detect(input, filename, false);
-  }
-
-  @Nullable
-  @Override
-  public String detect(@Nonnull final byte[] content, @Nullable final String filename) {
-    return detect(content, filename, false);
-  }
-
-  @Nullable
-  @Override
-  public final String detect(@Nonnull final File file, final boolean alwaysCheckMagic)
+  public final String detect(@Nonnull final File file,
+      @Nullable final String filename, final boolean alwaysCheckMagic)
       throws IOException {
     requireNonNull("file", file);
-    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {}", file);
-    final String filename = FilenameUtils.getFilename(file);
-    final List<String> fromExtension;
-    if (StringUtils.isEmpty(filename)) {
-      fromExtension = Collections.emptyList();
-    } else {
-      fromExtension = guessFromFilename(filename);
-    }
-    // if there is only one candidate, and we don't need to always check the
-    // file magic, then return the only candidate directly.
-    if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
-      logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
-      final String result = fromExtension.get(0);
-      logger.debug("Use the MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
-    // try to guess the MIME-type from the file content
-    final List<String> fromContent = guessFromContent(file);
-    // now we try to combine the results from the filename extension and the
-    // file content.
-    return mergeResults(fromExtension, fromContent);
+    return detectImpl(file, filename, alwaysCheckMagic,
+        FilenameUtils::getFilename, (File f) -> this.guessFromContent(f));
   }
 
   @Nullable
   @Override
-  public final String detect(@Nonnull final Path path, final boolean alwaysCheckMagic)
+  public final String detect(@Nonnull final Path path,
+      @Nullable final String filename, final boolean alwaysCheckMagic)
       throws IOException {
     requireNonNull("path", path);
-    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {}", path);
-    final String filename = FilenameUtils.getFilename(path);
-    final List<String> fromExtension;
-    if (StringUtils.isEmpty(filename)) {
-      fromExtension = Collections.emptyList();
-    } else {
-      fromExtension = guessFromFilename(filename);
-    }
-    // if there is only one candidate, and we don't need to always check the
-    // file magic, then return the only candidate directly.
-    if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
-      logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
-      final String result = fromExtension.get(0);
-      logger.debug("Use the MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
-    // try to guess the MIME-type from the file content
-    final List<String> fromContent = guessFromContent(path);
-    // now we try to combine the results from the filename extension and the
-    // file content.
-    return mergeResults(fromExtension, fromContent);
+    return detectImpl(path, filename, alwaysCheckMagic,
+        FilenameUtils::getFilename, (Path p) -> this.guessFromContent(p));
   }
 
   @Nullable
@@ -360,13 +257,22 @@ public abstract class AbstractMimeDetector implements MimeDetector {
       @Nullable final String filename, final boolean alwaysCheckMagic)
       throws IOException {
     requireNonNull("input", input);
-    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {} - {}",
-        filename, input);
+    return detectImpl(input, filename, alwaysCheckMagic,
+        (i) -> filename, (InputStream i) -> this.guessFromContent(i));
+  }
+
+  private <T> String detectImpl(final T arg,
+      @Nullable final String filename,
+      final boolean alwaysCheckMagic,
+      final GetFilenameFunctor<T> getFilenameFunctor,
+      final OpenStreamFunctor<T> openStreamFunctor) throws IOException {
+    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {}", arg);
+    final String theFilename = (filename != null ? filename : getFilenameFunctor.apply(arg));
     final List<String> fromExtension;
-    if (StringUtils.isEmpty(filename)) {
+    if (StringUtils.isEmpty(theFilename)) {
       fromExtension = Collections.emptyList();
     } else {
-      fromExtension = guessFromFilename(filename);
+      fromExtension = guessFromFilename(theFilename);
     }
     // if there is only one candidate, and we don't need to always check the
     // file magic, then return the only candidate directly.
@@ -377,7 +283,10 @@ public abstract class AbstractMimeDetector implements MimeDetector {
       return result;
     }
     // try to guess the MIME-type from the file content
-    final List<String> fromContent = guessFromContent(input);
+    final List<String> fromContent;
+    try (final InputStream in = openStreamFunctor.apply(arg)) {
+      fromContent = guessFromContent(in);
+    }
     // now we try to combine the results from the filename extension and the
     // file content.
     return mergeResults(fromExtension, fromContent);
@@ -385,64 +294,22 @@ public abstract class AbstractMimeDetector implements MimeDetector {
 
   @Nullable
   @Override
-  public final String detect(@Nonnull final URL url, final boolean alwaysCheckMagic)
-      throws IOException {
+  public final String detect(@Nonnull final URL url,
+      @Nullable final String filename,
+      final boolean alwaysCheckMagic) throws IOException {
     requireNonNull("url", url);
-    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {}", url);
-    final String filename = FilenameUtils.getFilename(url);
-    final List<String> fromExtension;
-    if (StringUtils.isEmpty(filename)) {
-      fromExtension = Collections.emptyList();
-    } else {
-      fromExtension = guessFromFilename(filename);
-    }
-    // if there is only one candidate, and we don't need to always check the
-    // file magic, then return the only candidate directly.
-    if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
-      logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
-      final String result = fromExtension.get(0);
-      logger.debug("Use the MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
-    // try to guess the MIME-type from the file content
-    final List<String> fromContent;
-    try (final InputStream in = UrlUtils.openStream(url)) {
-      fromContent = guessFromContent(in);
-    }
-    // now we try to combine the results from the filename extension and the
-    // file content.
-    return mergeResults(fromExtension, fromContent);
+    return detectImpl(url, filename, alwaysCheckMagic,
+        FilenameUtils::getFilename, (URL u) -> UrlUtils.openStream(u));
   }
 
   @Nullable
   @Override
-  public final String detect(@Nonnull final URI uri, final boolean alwaysCheckMagic)
-      throws IOException {
+  public final String detect(@Nonnull final URI uri,
+      @Nullable final String filename,
+      final boolean alwaysCheckMagic) throws IOException {
     requireNonNull("url", uri);
-    logger.debug("Detecting the MIME-type of the file from its filename extension and its content: {}", uri);
-    final String filename = FilenameUtils.getFilename(uri);
-    final List<String> fromExtension;
-    if (StringUtils.isEmpty(filename)) {
-      fromExtension = Collections.emptyList();
-    } else {
-      fromExtension = guessFromFilename(filename);
-    }
-    // if there is only one candidate, and we don't need to always check the
-    // file magic, then return the only candidate directly.
-    if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
-      logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
-      final String result = fromExtension.get(0);
-      logger.debug("Use the MIME-type detected from the filename extension: {}", result);
-      return result;
-    }
-    // try to guess the MIME-type from the file content
-    final List<String> fromContent;
-    try (final InputStream in = UrlUtils.openStream(uri)) {
-      fromContent = guessFromContent(in);
-    }
-    // now we try to combine the results from the filename extension and the
-    // file content.
-    return mergeResults(fromExtension, fromContent);
+    return detectImpl(uri, filename, alwaysCheckMagic,
+        FilenameUtils::getFilename, (URI u) -> UrlUtils.openStream(u));
   }
 
   @Nullable

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//    Copyright (c) 2017 - 2024.
-//    Nanjing Smart Medical Investment Operation Service Co. Ltd.
+//    Copyright (c) 2022 - 2024.
+//    Haixing Hu, Qubit Co. Ltd.
 //
 //    All rights reserved.
 //
@@ -420,7 +420,7 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
   }
 
   @Override
-  public MimeMagicMatcher clone() {
+  public MimeMagicMatcher cloneEx() {
     final MimeMagicMatcher result = new MimeMagicMatcher();
     result.type = type;
     result.offsetBegin = offsetBegin;
@@ -428,7 +428,7 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     result.value = Assignment.clone(value);
     result.mask = Assignment.clone(mask);
     for (final MimeMagicMatcher matcher : subMatchers) {
-      result.subMatchers.add(matcher.clone());
+      result.subMatchers.add(matcher.cloneEx());
     }
     return result;
   }

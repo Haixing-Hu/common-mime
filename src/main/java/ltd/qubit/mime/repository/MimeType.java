@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-//    Copyright (c) 2017 - 2024.
-//    Nanjing Smart Medical Investment Operation Service Co. Ltd.
+//    Copyright (c) 2022 - 2024.
+//    Haixing Hu, Qubit Co. Ltd.
 //
 //    All rights reserved.
 //
@@ -255,7 +255,7 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
   }
 
   @Override
-  public MimeType clone() {
+  public MimeType cloneEx() {
     final MimeType cloned = new MimeType();
     cloned.name = name;
     cloned.descriptions = Assignment.cloneMap(descriptions);
