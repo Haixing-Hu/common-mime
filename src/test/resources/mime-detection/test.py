@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+#
+#     Copyright (c) 2022 - 2024.
+#     Haixing Hu, Qubit Co. Ltd.
+#
+#     All rights reserved.
+#
+
 from math import sin, pi
 
 

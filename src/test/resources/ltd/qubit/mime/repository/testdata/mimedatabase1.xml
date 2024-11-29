@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~
-  ~    Copyright (c) 2016.  Haixing Hu @ Qubit Technology Co. Ltd.
+  ~    Copyright (c) 2022 - 2024.
+  ~    Haixing Hu, Qubit Co. Ltd.
   ~
   ~    All rights reserved.
   ~
-  -->
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="image/x-tga">
