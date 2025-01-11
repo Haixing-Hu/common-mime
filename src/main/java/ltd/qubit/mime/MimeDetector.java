@@ -17,6 +17,7 @@ import java.nio.file.Path;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 
 import ltd.qubit.commons.io.FilenameUtils;
 
@@ -25,6 +26,7 @@ import ltd.qubit.commons.io.FilenameUtils;
  *
  * @author Haixing Hu
  */
+@Immutable
 public interface MimeDetector {
 
   /**
