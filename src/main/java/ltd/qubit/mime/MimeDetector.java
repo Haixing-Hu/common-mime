@@ -30,6 +30,23 @@ import ltd.qubit.commons.io.FilenameUtils;
 public interface MimeDetector {
 
   /**
+   * Gets the default MIME-type detector.
+   * <p>
+   * If the 'file' command is available, it will be used to detect the MIME-type
+   * of the file. Otherwise, the repository-based MIME-type detector will be used.
+   *
+   * @return
+   *     the default MIME-type detector.
+   */
+  static MimeDetector getDefault() {
+    if (FileCommandMimeDetector.isAvailable()) {
+      return new FileCommandMimeDetector();
+    } else {
+      return new RepositoryMimeDetector();
+    }
+  }
+
+  /**
    * Gets whether this detector will always check the file magic by default.
    *
    * @return

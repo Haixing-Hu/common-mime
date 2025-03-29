@@ -68,4 +68,22 @@ public class FileCommandMimeDetector extends FileBasedMimeDetector {
       return Collections.emptyList();
     }
   }
+
+  /**
+   * Checks if the 'file' command is available.
+   *
+   * @return
+   *     {@code true} if the 'file' command is available, {@code false} otherwise.
+   */
+  public static boolean isAvailable() {
+    final String cmd = COMMAND.replace("${file}", ".");
+    final CommandExecutor executor = new CommandExecutor();
+    final String output;
+    try {
+      output = executor.execute(cmd, true);
+      return output != null;
+    } catch (final IOException e) {
+      return false;
+    }
+  }
 }

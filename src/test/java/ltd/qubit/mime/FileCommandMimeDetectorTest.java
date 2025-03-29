@@ -21,6 +21,7 @@ import ltd.qubit.commons.lang.SystemUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileCommandMimeDetectorTest extends MimeDetectorTestBase {
 
@@ -40,5 +41,10 @@ public class FileCommandMimeDetectorTest extends MimeDetectorTestBase {
     assertNotNull(url);
     final String result = detector.detect(url);
     assertEquals("video/webm", result);
+  }
+
+  @Test
+  public void testIsAvailable() {
+    assertTrue(FileCommandMimeDetector.isAvailable());
   }
 }
