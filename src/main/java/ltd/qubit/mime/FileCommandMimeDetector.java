@@ -17,6 +17,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import ltd.qubit.commons.concurrent.Lazy;
 import ltd.qubit.commons.datastructure.CollectionUtils;
 import ltd.qubit.commons.util.CommandExecutor;
 import ltd.qubit.mime.repository.MimeRepository;
@@ -70,20 +74,40 @@ public class FileCommandMimeDetector extends FileBasedMimeDetector {
   }
 
   /**
-   * Checks if the 'file' command is available.
+   * Gets whether the 'file' command is available.
    *
    * @return
    *     {@code true} if the 'file' command is available, {@code false} otherwise.
    */
   public static boolean isAvailable() {
+    return AVAILABLE.get();
+  }
+
+  private static final Lazy<Boolean> AVAILABLE = Lazy.of(FileCommandMimeDetector::checkAvailable);
+
+  /**
+   * Checks if the 'file' command is available.
+   *
+   * @return
+   *     {@code true} if the 'file' command is available, {@code false} otherwise.
+   */
+  private static boolean checkAvailable() {
     final String cmd = COMMAND.replace("${file}", ".");
     final CommandExecutor executor = new CommandExecutor();
-    final String output;
+    executor.setDisableLogging(true);
+    boolean result;
     try {
-      output = executor.execute(cmd, true);
-      return output != null;
+      final String output = executor.execute(cmd, true);
+      result = (output != null);
     } catch (final IOException e) {
-      return false;
+      result = false;
     }
+    final Logger logger = LoggerFactory.getLogger(FileCommandMimeDetector.class);
+    if (result) {
+      logger.info("The 'file' command is available.");
+    } else {
+      logger.info("The 'file' command is not available.");
+    }
+    return result;
   }
 }
