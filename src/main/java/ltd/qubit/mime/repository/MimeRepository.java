@@ -56,14 +56,14 @@ import static ltd.qubit.commons.lang.Argument.requireNonNull;
 import static ltd.qubit.commons.lang.Argument.requirePositive;
 
 /**
- * The MIME-type repository is a singleton registry of all MIME-types.
+ * MIME类型存储库是所有MIME类型的单例注册表。
  * <p>
- * TODO: this implementation can NOT handle the MIME-type of a directory, which
- *   has a directory tree glob pattern.
+ * TODO: 此实现无法处理目录的MIME类型，该目录具有目录树的glob模式。
  *
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @NotThreadSafe
 public class MimeRepository implements Serializable {
@@ -71,25 +71,23 @@ public class MimeRepository implements Serializable {
   private static final long serialVersionUID = - 6880339145050773602L;
 
   /**
-   * The value of this property decides whether the MIME registry will be
-   * rebuilt and ignore the existing serialized registry.
+   * 此属性的值决定是否重建MIME注册表并忽略现有的序列化注册表。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>boolean</td>
    * <td>1</td>
-   * <td>whether the MIME registry will be rebuild and ignore the existing
-   * serialized registry.</td>
-   * <td>no</td>
+   * <td>是否重建MIME注册表并忽略现有的序列化注册表。</td>
+   * <td>否</td>
    * <td>{@link #DEFAULT_REBUILD}</td>
    * <td></td>
    * </tr>
@@ -100,32 +98,30 @@ public class MimeRepository implements Serializable {
   public static final String PROPERTY_REBUILD = "ltd.qubit.mime.repository.MimeRepository.rebuild";
 
   /**
-   * The default value of the property {@link #PROPERTY_REBUILD}.
+   * 属性{@link #PROPERTY_REBUILD}的默认值。
    *
    * @see #PROPERTY_REBUILD
    */
   public static final boolean DEFAULT_REBUILD = false;
 
   /**
-   * The value of this property decides whether to save the MIME-type repository
-   * after rebuilding the repository.
+   * 此属性的值决定是否在重建存储库后保存MIME类型存储库。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>boolean</td>
    * <td>1</td>
-   * <td>whether to save the MIME-type repository after rebuilding the
-   * repository.</td>
-   * <td>no</td>
+   * <td>是否在重建存储库后保存MIME类型存储库。</td>
+   * <td>否</td>
    * <td>{@link #DEFAULT_SAVE}</td>
    * <td></td>
    * </tr>
@@ -136,32 +132,30 @@ public class MimeRepository implements Serializable {
   public static final String PROPERTY_SAVE = "ltd.qubit.mime.repository.MimeRepository.save";
 
   /**
-   * The default value of the property {@link #PROPERTY_SAVE}.
+   * 属性{@link #PROPERTY_SAVE}的默认值。
    *
    * @see #PROPERTY_SAVE
    */
   public static final boolean DEFAULT_SAVE = false;
 
   /**
-   * If the value of this property decides whether the detection of MIME-type by
-   * filename and content will check the magic by default.
+   * 如果此属性的值决定是否默认通过文件名和内容检测MIME类型时检查魔数。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>boolean</td>
    * <td>1</td>
-   * <td>whether the detection of MIME-type by filename and content will check
-   * the magic by default.</td>
-   * <td>no</td>
+   * <td>是否默认通过文件名和内容检测MIME类型时检查魔数。</td>
+   * <td>否</td>
    * <td>{@link #DEFAULT_CHECK_MAGIC}</td>
    * <td></td>
    * </tr>
@@ -172,32 +166,30 @@ public class MimeRepository implements Serializable {
   public static final String PROPERTY_CHECK_MAGIC = "ltd.qubit.mime.repository.MimeRepository.checkMagic";
 
   /**
-   * The default value of the property {@link #PROPERTY_CHECK_MAGIC}.
+   * 属性{@link #PROPERTY_CHECK_MAGIC}的默认值。
    *
    * @see #PROPERTY_CHECK_MAGIC
    */
   public static final boolean DEFAULT_CHECK_MAGIC = false;
 
   /**
-   * The value of this property specifies the absolute pathname of the file
-   * where to store the serialized MIME-type registry.
+   * 此属性的值指定存储序列化MIME类型注册表的文件的绝对路径名。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>string</td>
    * <td>1</td>
-   * <td>the absolute pathname of the file where to store the serialized
-   * MIME-type registry.</td>
-   * <td>no</td>
+   * <td>存储序列化MIME类型注册表的文件的绝对路径名。</td>
+   * <td>否</td>
    * <td>{@link #DEFAULT_SERIALIZATION}</td>
    * <td></td>
    * </tr>
@@ -208,32 +200,31 @@ public class MimeRepository implements Serializable {
   public static final String PROPERTY_SERIALIZATION = "ltd.qubit.mime.repository.MimeRepository.serialization";
 
   /**
-   * The default value of the property {@link #PROPERTY_SERIALIZATION}.
+   * 属性{@link #PROPERTY_SERIALIZATION}的默认值。
    *
    * @see #PROPERTY_SERIALIZATION
    */
   public static final String DEFAULT_SERIALIZATION = "${user.home}/.qubit/MimeRepository.ser";
 
   /**
-   * The value of this property specifies the resource name of the XML format
-   * MIME-type database file.
+   * 此属性的值指定包含MIME类型信息的数据库文件的绝对路径名。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>string</td>
    * <td>1</td>
-   * <td>the resource name of the XML format MIME-type database file.</td>
-   * <td>no</td>
-   * <td>${user.home}/.qubit/MimeTypeRepository.ser</td>
+   * <td>包含MIME类型信息的数据库文件的绝对路径名。</td>
+   * <td>否</td>
+   * <td>未定义</td>
    * <td></td>
    * </tr>
    * </table>
@@ -241,24 +232,24 @@ public class MimeRepository implements Serializable {
   public static final String PROPERTY_DATABASE = "ltd.qubit.mime.repository.MimeRepository.database";
 
   /**
-   * The value of this property specifies the default binary MIME-type name.
+   * 此属性的值指定默认的二进制MIME类型名称。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>string</td>
    * <td>1</td>
-   * <td>the default binary MIME-type name.</td>
-   * <td>no</td>
-   * <td>application/octet-stream</td>
+   * <td>默认的二进制MIME类型名称。</td>
+   * <td>否</td>
+   * <td>"application/octet-stream"</td>
    * <td></td>
    * </tr>
    * </table>
@@ -266,24 +257,24 @@ public class MimeRepository implements Serializable {
   public static final String PROPERTY_DEFAULT_BINARY = "ltd.qubit.mime.repository.MimeRepository.defaultBinary";
 
   /**
-   * The value of this property specifies the default text MIME-type name.
+   * 此属性的值指定默认的文本MIME类型名称。
    * <p>
    * <table border="1">
    * <caption></caption>
    * <tr>
-   * <th>Type</th>
-   * <th>Count</th>
-   * <th>Value</th>
-   * <th>Required</th>
-   * <th>Default</th>
-   * <th>Range</th>
+   * <th>类型</th>
+   * <th>数量</th>
+   * <th>值</th>
+   * <th>必需</th>
+   * <th>默认值</th>
+   * <th>范围</th>
    * </tr>
    * <tr>
    * <td>string</td>
    * <td>1</td>
-   * <td>default text MIME-type name.</td>
-   * <td>no</td>
-   * <td>text/plain</td>
+   * <td>默认的文本MIME类型名称。</td>
+   * <td>否</td>
+   * <td>"text/plain"</td>
    * <td></td>
    * </tr>
    * </table>
@@ -298,6 +289,11 @@ public class MimeRepository implements Serializable {
 
   private static volatile MimeRepository instance = null;
 
+  /**
+   * 获取MIME类型存储库的单例实例。
+   *
+   * @return MIME类型存储库的单例实例。
+   */
   public static MimeRepository getInstance() {
     // use the double-checked locking trick
     if (instance == null) {
@@ -321,6 +317,9 @@ public class MimeRepository implements Serializable {
   private boolean alwaysCheckMagic;
   private int maxTestBytes;
 
+  /**
+   * 构造一个默认的MIME类型存储库。
+   */
   private MimeRepository() {
     mimeList = new LinkedList<>();
     mimeNameMap = new HashMap<>();
@@ -331,6 +330,12 @@ public class MimeRepository implements Serializable {
     alwaysCheckMagic = false;
   }
 
+  /**
+   * 构造一个具有指定配置的MIME类型存储库。
+   *
+   * @param config
+   *     指定的配置。
+   */
   private MimeRepository(final Config config) {
     this();
     this.config = config;
@@ -352,10 +357,21 @@ public class MimeRepository implements Serializable {
     }
   }
 
+  /**
+   * 重建MIME类型存储库。
+   */
   public void rebuild() {
     rebuild(config);
   }
 
+  /**
+   * 从文件加载MIME类型存储库。
+   *
+   * @param file
+   *     要加载的文件。
+   * @throws IOException
+   *     如果发生I/O错误。
+   */
   protected void load(final File file) throws IOException {
     logger.info("Loading the serialized MIME-type repository from {} ...", file);
     final long start = System.currentTimeMillis();
@@ -378,6 +394,9 @@ public class MimeRepository implements Serializable {
     logStatistics();
   }
 
+  /**
+   * 记录MIME类型存储库的统计信息。
+   */
   private void logStatistics() {
     logger.info("Totally {} MIME-type entries.", mimeList.size());
     logger.info("Totally {} literal globs.", literalGlobMap.size());
@@ -385,6 +404,14 @@ public class MimeRepository implements Serializable {
     logger.info("Totally {} other globs.", otherGlobList.size());
   }
 
+  /**
+   * 将MIME类型存储库存储到文件。
+   *
+   * @param file
+   *     要存储到的文件。
+   * @throws IOException
+   *     如果发生I/O错误。
+   */
   protected void store(final File file) throws IOException {
     logger.info("Storing the serialized MIME-type repository to {} ...", file);
     final long start = System.currentTimeMillis();
@@ -403,6 +430,12 @@ public class MimeRepository implements Serializable {
     		"repository in {} milliseconds.", end - start);
   }
 
+  /**
+   * 使用指定的配置重建MIME类型存储库。
+   *
+   * @param config
+   *     指定的配置。
+   */
   protected void rebuild(final Config config) {
     final String database = config.getString(PROPERTY_DATABASE);
     logger.info("Rebuilding the MIME-type repository ...");
@@ -429,58 +462,62 @@ public class MimeRepository implements Serializable {
     }
   }
 
+  /**
+   * 根据名称获取MIME类型。
+   *
+   * @param name
+   *     MIME类型的名称。
+   * @return 具有指定名称的MIME类型，如果没有找到，则返回null。
+   */
   public MimeType get(final String name) {
     return mimeNameMap.get(normalizeName(name));
   }
 
+  /**
+   * 获取所有MIME类型的列表。
+   *
+   * @return 所有MIME类型的不可修改列表。
+   */
   public List<MimeType> getAll() {
     return Collections.unmodifiableList(mimeList);
   }
 
   /**
-   * Returns the maximum number of bytes need to be tested in order to determinate
-   * the correct MIME type using the MIME magic.
+   * 获取测试字节的最大数量。
+   * <p>
+   * 这是所有魔数匹配器所需的最大字节数，用于确定读取缓冲区的大小。
    *
-   * @return The maximum number of bytes need to be tested in order to determinate
-   *         the correct MIME type using the MIME magic.
+   * @return 测试字节的最大数量。
    */
   public int getMaxTestBytes() {
     return maxTestBytes;
   }
 
   /**
-   * Detect the MIME-type from the extension of a filename.
+   * 通过文件名检测MIME类型。
    * <p>
-   * The following rules should be obeyed by the detection procedure:
+   * 检测过程应遵循以下规则：
    * <p>
-   * Applications MUST match globs case-insensitively, except when the
-   * case-sensitive attribute is set to true. This is so that e.g. main.C will
-   * be seen as a C++ file, but IMAGE.GIF will still use the *.gif pattern.
+   * 应用程序必须以大小写不敏感的方式匹配glob模式，除非case-sensitive属性设置为true。
+   * 这是为了使main.C被识别为C++文件，而IMAGE.GIF仍然使用*.gif模式。
    * <p>
-   * If several patterns of the same weight match then the longest pattern
-   * SHOULD be used. In particular, files with multiple extensions (such as
-   * Data.tar.gz) MUST match the longest sequence of extensions (eg '*.tar.gz'
-   * in preference to '*.gz'). Literal patterns (eg, 'Makefile') must be matched
-   * before all others. It is suggested that patterns beginning with `*.' and
-   * containing no other special characters (`*?[') should be placed in a hash
-   * table for efficient lookup, since this covers the majority of the patterns.
-   * Thus, patterns of this form should be matched before other wild-carded
-   * patterns.
+   * 如果多个相同权重的模式匹配，则应该使用最长的模式。特别是，具有多个扩展名的文件
+   * （如Data.tar.gz）必须优先匹配最长的扩展名序列（例如，优先使用'*.tar.gz'而不是'*.gz'）。
+   * 字面量模式（如'Makefile'）必须优先于所有其他模式匹配。建议将以`*.`开头且不包含
+   * 其他特殊字符（`*?[`）的模式放入哈希表中以提高查找效率，因为这涵盖了大多数模式。
+   * 因此，这种形式的模式应该在其他通配符模式之前匹配。
    * <p>
-   * If a matching pattern is provided by two or more MIME types, applications
-   * SHOULD not rely on one of them. They are instead supposed to use magic data
-   * (see below) to detect the actual MIME type. This is for instance required
-   * to deal with container formats like Ogg or AVI, that map various video
-   * and/or audio-encoded data to one extension.
+   * 如果一个匹配模式由两个或多个MIME类型提供，应用程序不应该依赖其中任何一个。
+   * 它们应该使用魔数（见下文）来检测实际的MIME类型。这对于处理像Ogg或AVI这样的
+   * 容器格式尤为必要，这些格式将各种视频和/或音频编码的数据映射到一个扩展名。
    * <p>
-   * There may be several rules mapping to the same type. They should all be
-   * merged. If the same pattern is defined twice, then they MUST be ordered by
-   * the directory the rule came from, as described above.
+   * 可能有多个规则映射到同一类型。它们应该全部合并。如果同一模式被定义两次，
+   * 则必须按照规则来源的目录进行排序，如上所述。
    *
    * @param filename
-   *     the filename of the file to be detected.
-   * @return the list of all possible MIME-types for the specified filename; or
-   *     {@code null} if no MIME-type matches the specified filename.
+   *     要检测其MIME类型的文件名。
+   * @return 与指定文件名匹配的MIME类型列表，按匹配模式的权重降序排列；
+   *     如果没有找到匹配项，则返回null。
    */
   @Nullable
   public List<MimeType> detectByFilename(final String filename) {
@@ -527,15 +564,14 @@ public class MimeRepository implements Serializable {
   }
 
   /**
-   * Detect the MIME-type from the content of a file.
+   * 通过内容检测MIME类型。
    *
    * @param buffer
-   *     the buffer containing the content of the file.
+   *     包含要检测其MIME类型的内容的缓冲区。
    * @param n
-   *     the number of bytes in the buffer.
-   * @return
-   *     the list of all possible MIME-types for the specified content; or
-   *     {@code null} if no MIME-type matches the specified content.
+   *     缓冲区中要检测的字节数。
+   * @return 与指定内容匹配的MIME类型列表，按魔数匹配器的优先级降序排列；
+   *     如果没有找到匹配项，则返回null。
    */
   @Nullable
   public List<MimeType> detectByContent(final byte[] buffer, final int n) {
@@ -545,19 +581,16 @@ public class MimeRepository implements Serializable {
   }
 
   /**
-   * Detect the MIME-type from the content of a file.
+   * 通过输入流的内容检测MIME类型。
    * <p>
-   * <b>NOTE:</b> The input stream must support marking, and will not be closed
-   * by this method.
-   *
+   * 注意：此方法将不会关闭指定的输入流。
+   * 
    * @param markSupportedInput
-   *     the input stream of the content of the file. Note that this input
-   *     stream must support marking, and this method will mark the input
-   *     stream before reading the content, and reset the input stream after
-   *     reading the content. It will not close the input stream.
+   *     支持标记的输入流，包含要检测其MIME类型的内容。注意：此输入流必须支持标记，并且此方法
+   *     将在读取内容之前标记输入流，读取内容后重置输入流。它不会关闭输入流。
    * @return
-   *     the list of all possible MIME-types for the specified content; or
-   *     {@code null} if no MIME-type matches the specified content.
+   *     与指定内容匹配的MIME类型列表，按魔数匹配器的优先级降序排列；如果没有找到匹配项，
+   *     则返回null。
    */
   @Nullable
   public List<MimeType> detectByContent(final InputStream markSupportedInput)
@@ -573,11 +606,38 @@ public class MimeRepository implements Serializable {
     return Utils.detectByMagic(buffer, nBytes, mimeList);
   }
 
+  /**
+   * 通过文件名和内容检测MIME类型。
+   *
+   * @param filename
+   *     要检测其MIME类型的文件名。
+   * @param buffer
+   *     包含要检测其MIME类型的内容的缓冲区。
+   * @param n
+   *     缓冲区中要检测的字节数。
+   * @return 检测结果，即与指定文件名和内容匹配的MIME类型列表，按匹配规则的权重/优先级降序排列；
+   *     如果没有找到匹配项，则返回null。
+   */
   @Nullable
   public List<MimeType> detect(final String filename, final byte[] buffer, final int n) {
     return detect(filename, buffer, n, alwaysCheckMagic);
   }
 
+  /**
+   * 通过文件名和内容检测MIME类型。
+   *
+   * @param filename
+   *     要检测其MIME类型的文件名。
+   * @param buffer
+   *     包含要检测其MIME类型的内容的缓冲区。
+   * @param nBytes
+   *     缓冲区中要检测的字节数。
+   * @param alwaysCheckMagic
+   *     是否总是检查魔数。如果为true，即使已经通过文件名匹配到MIME类型，也会通过内容检查魔数；
+   *     如果为false，只有在通过文件名无法匹配到MIME类型时，才会通过内容检查魔数。
+   * @return 检测结果，即与指定文件名和内容匹配的MIME类型列表，按匹配规则的权重/优先级降序排列；
+   *     如果没有找到匹配项，则返回null。
+   */
   @Nullable
   public List<MimeType> detect(final String filename, final byte[] buffer,
       final int nBytes, final boolean alwaysCheckMagic) {
@@ -592,12 +652,43 @@ public class MimeRepository implements Serializable {
     return Utils.checkByMagic(buffer, nBytes, list);
   }
 
+  /**
+   * 通过文件名和输入流的内容检测MIME类型。
+   * <p>
+   * 注意：此方法将不会关闭指定的输入流。
+   *
+   * @param filename
+   *     要检测其MIME类型的文件名。
+   * @param input
+   *     包含要检测其MIME类型的内容的输入流。
+   * @return 检测结果，即与指定文件名和内容匹配的MIME类型列表，按匹配规则的权重/优先级降序排列；
+   *     如果没有找到匹配项，则返回null。
+   * @throws IOException
+   *     如果发生I/O错误。
+   */
   @Nullable
   public List<MimeType> detect(final String filename, final InputStream input)
       throws IOException {
     return detect(filename, input, alwaysCheckMagic);
   }
 
+  /**
+   * 通过文件名和输入流的内容检测MIME类型。
+   * <p>
+   * 注意：此方法将不会关闭指定的输入流。
+   *
+   * @param filename
+   *     要检测其MIME类型的文件名。
+   * @param input
+   *     包含要检测其MIME类型的内容的输入流。
+   * @param alwaysCheckMagic
+   *     是否总是检查魔数。如果为true，即使已经通过文件名匹配到MIME类型，也会通过内容检查魔数；
+   *     如果为false，只有在通过文件名无法匹配到MIME类型时，才会通过内容检查魔数。
+   * @return 检测结果，即与指定文件名和内容匹配的MIME类型列表，按匹配规则的权重/优先级降序排列；
+   *     如果没有找到匹配项，则返回null。
+   * @throws IOException
+   *     如果发生I/O错误。
+   */
   @Nullable
   public List<MimeType> detect(final String filename, final InputStream input,
       final boolean alwaysCheckMagic) throws IOException {
@@ -636,6 +727,16 @@ public class MimeRepository implements Serializable {
     }
   }
 
+  /**
+   * 检测文件的MIME类型。
+   *
+   * @param file
+   *     要检测其MIME类型的文件。
+   * @return 检测结果，即与指定文件匹配的MIME类型列表，按匹配规则的权重/优先级降序排列；
+   *     如果没有找到匹配项，则返回null。
+   * @throws IOException
+   *     如果发生I/O错误。
+   */
   @Nullable
   public List<MimeType> detect(final File file) throws IOException {
     try (final InputStream in = new BufferedInputStream(new FileInputStream(file))) {
@@ -643,6 +744,15 @@ public class MimeRepository implements Serializable {
     }
   }
 
+  /**
+   * 检测文件的第一个MIME类型名称。
+   *
+   * @param file
+   *     要检测其MIME类型的文件。
+   * @return 与指定文件匹配的第一个MIME类型的名称；如果没有找到匹配项，则返回null。
+   * @throws IOException
+   *     如果发生I/O错误。
+   */
   @Nullable
   public String detectFirstName(final File file) throws IOException {
     final List<MimeType> mimes = detect(file);
@@ -653,6 +763,9 @@ public class MimeRepository implements Serializable {
     }
   }
 
+  /**
+   * 清除此存储库的内容。
+   */
   private void clear() {
     this.mimeList.clear();
     this.mimeNameMap.clear();
@@ -663,6 +776,12 @@ public class MimeRepository implements Serializable {
     this.alwaysCheckMagic = false;
   }
 
+  /**
+   * 与另一个存储库交换内容。
+   *
+   * @param that
+   *     要交换内容的存储库。
+   */
   private void swap(final MimeRepository that) {
     assert (this != that);
     final List<MimeType> tempMimeList = that.mimeList;
@@ -694,6 +813,12 @@ public class MimeRepository implements Serializable {
     this.alwaysCheckMagic = tempAlwaysCheckMagic;
   }
 
+  /**
+   * 添加MIME类型到此存储库。
+   *
+   * @param mime
+   *     要添加的MIME类型。
+   */
   private void addMimeType(final MimeType mime) {
     // put the name to the m_mimeNameMap
     final String name = mime.getName();
@@ -744,6 +869,14 @@ public class MimeRepository implements Serializable {
     }
   }
 
+  /**
+   * 从XML元素解析MIME类型存储库。
+   *
+   * @param root
+   *     包含MIME类型存储库信息的XML元素。
+   * @throws XmlException
+   *     如果发生XML解析错误。
+   */
   public void fromXml(final Element root) throws XmlException {
     // first deserialize the XML and get a name map of MIME-types
     logger.info("Deserialize MimeRepository from XML ...");
@@ -776,6 +909,15 @@ public class MimeRepository implements Serializable {
     logger.info("Successfully deserialize MimeRepository from XML.");
   }
 
+  /**
+   * 将MIME类型存储库转换为XML元素。
+   *
+   * @param doc
+   *     用于创建XML元素的文档。
+   * @return 包含MIME类型存储库信息的XML元素。
+   * @throws XmlException
+   *     如果发生XML生成错误。
+   */
   public Element toXml(final Document doc) throws XmlException {
     logger.trace("Serializing MimeRepository into XML ...");
     final Element result = doc.createElement(ROOT_NODE);
@@ -787,10 +929,20 @@ public class MimeRepository implements Serializable {
     return result;
   }
 
+  /**
+   * 标准化MIME类型名称。
+   *
+   * @param name
+   *     要标准化的MIME类型名称。
+   * @return 标准化后的MIME类型名称。
+   */
   protected String normalizeName(final String name) {
     return name.toLowerCase();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString() {
     return new ToStringBuilder(this)

@@ -9,14 +9,14 @@
 package ltd.qubit.mime;
 
 /**
- * Provides constants of common MIME types.
+ * 提供常用MIME类型的常量。
  *
- * @author Haixing Hu
+ * @author 胡海星
  */
 public interface CommonMimeTypes {
 
   /**
-   * The MIME types of the Microsoft Excel files.
+   * Microsoft Excel文件的MIME类型。
    */
   String[] EXCEL_MIME_TYPES = {
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",  // .xlsx
@@ -24,12 +24,12 @@ public interface CommonMimeTypes {
   };
 
   /**
-   * The default MIME type of the Microsoft Excel files.
+   * Microsoft Excel文件的默认MIME类型。
    */
   String EXCEL_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
   /**
-   * The MIME types of the Microsoft Word files.
+   * Microsoft Word文件的MIME类型。
    */
   String[] WORD_MIME_TYPES = {
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",  // .docx
@@ -37,12 +37,12 @@ public interface CommonMimeTypes {
   };
 
   /**
-   * The default MIME type of the Microsoft Word files.
+   * Microsoft Word文件的默认MIME类型。
    */
   String WORD_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
   /**
-   * The MIME types of the Microsoft PowerPoint files.
+   * Microsoft PowerPoint文件的MIME类型。
    */
   String[] POWERPOINT_MIME_TYPES = {
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",  // .pptx
@@ -51,29 +51,29 @@ public interface CommonMimeTypes {
   };
 
   /**
-   * The default MIME type of the Microsoft PowerPoint files.
+   * Microsoft PowerPoint文件的默认MIME类型。
    */
   String POWERPOINT_MIME_TYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
 
   /**
-   * The default MIME type of the PDF files.
+   * PDF文件的默认MIME类型。
    */
   String PDF_MIME_TYPE = "application/pdf";
 
   /**
-   * The mime types of the PDF files.
+   * PDF文件的MIME类型。
    */
   String[] PDF_MIME_TYPES = {
       PDF_MIME_TYPE,                                                        // .pdf
   };
 
   /**
-   * The default MIME type of the JSON files.
+   * JSON文件的默认MIME类型。
    */
   String JSON_MIME_TYPE = "application/json";
 
   /**
-   * The mime types of the JSON files.
+   * JSON文件的MIME类型。
    */
   String[] JSON_MIME_TYPES = {
       JSON_MIME_TYPE,                                                       // .json
@@ -81,86 +81,86 @@ public interface CommonMimeTypes {
 
 
   /**
-   * The default MIME type of the XML files.
+   * XML文件的默认MIME类型。
    */
   String XML_MIME_TYPE = "application/xml";
 
   /**
-   * The mime types of the XML files.
+   * XML文件的MIME类型。
    */
   String[] XML_MIME_TYPES = {
       XML_MIME_TYPE,                                                          // .xml
   };
 
   /**
-   * The default MIME type of the CSV files.
+   * CSV文件的默认MIME类型。
    */
   String CSV_MIME_TYPE = "text/csv";
 
   /**
-   * The MIME types of the CSV files.
+   * CSV文件的MIME类型。
    */
   String[] CSV_MIME_TYPES = {
       CSV_MIME_TYPE,                                                           // .csv
   };
 
   /**
-   * The default MIME type of the PNG files.
+   * PNG文件的默认MIME类型。
    */
   String PNG_MIME_TYPE = "image/png";
 
   /**
-   * The default MIME type of the JPEG files.
+   * JPEG文件的默认MIME类型。
    */
   String JPEG_MIME_TYPE = "image/jpeg";
 
   /**
-   * The default MIME type of the GIF files.
+   * GIF文件的默认MIME类型。
    */
   String GIF_MIME_TYPE = "image/gif";
 
   /**
-   * The default MIME type of the MP4 files.
+   * MP4文件的默认MIME类型。
    */
   String MP4_MIME_TYPE = "video/mp4";
 
   /**
-   * The default MIME type of the MP3 files.
+   * MP3文件的默认MIME类型。
    */
   String MP3_MIME_TYPE = "audio/mpeg";
 
   /**
-   * The default MIME type of the WAV files.
+   * WAV文件的默认MIME类型。
    */
   String WAV_MIME_TYPE = "audio/wav";
 
   /**
-   * The default MIME type of the OGG files.
+   * OGG文件的默认MIME类型。
    */
   String OGG_MIME_TYPE = "audio/ogg";
 
   /**
-   * The default MIME type of the WEBM video files.
+   * WEBM视频文件的默认MIME类型。
    */
   String WEBM_MIME_TYPE = "video/webm";
 
   /**
-   * The default MIME type of the AVI files.
+   * AVI文件的默认MIME类型。
    */
   String AVI_MIME_TYPE = "video/x-msvideo";
 
   /**
-   * The default MIME type of the FLV files.
+   * FLV文件的默认MIME类型。
    */
   String FLV_MIME_TYPE = "video/x-flv";
 
   /**
-   * The default MIME type of the QuickTime video files.
+   * QuickTime视频文件的默认MIME类型。
    */
   String MOV_MIME_TYPE = "video/quicktime";
 
   /**
-   * The default MIME type of the WMV video files.
+   * WMV视频文件的默认MIME类型。
    */
   String WMV_MIME_TYPE = "video/x-ms-wmv";
 }

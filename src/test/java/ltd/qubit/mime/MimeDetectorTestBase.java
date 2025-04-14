@@ -32,7 +32,7 @@ import static ltd.qubit.commons.lang.StringUtils.formatPercent;
 /**
  * The base class of all tests of the {@link MimeDetector}s.
  *
- * @author Haixing Hu
+ * @author 胡海星
  */
 public class MimeDetectorTestBase {
 

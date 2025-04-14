@@ -32,7 +32,7 @@ import static ltd.qubit.mime.repository.MimeConfig.PROPERTY_RESOURCE;
 /**
  * Unit test of the {@link MimeRepository} class.
  *
- * @author Haixing Hu
+ * @author 胡海星
  */
 public class MimeRepositoryTest {
 

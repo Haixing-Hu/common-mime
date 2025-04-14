@@ -30,9 +30,10 @@ import static ltd.qubit.mime.repository.MimeGlob.MAX_WEIGHT;
 import static ltd.qubit.mime.repository.MimeGlob.MIN_WEIGHT;
 
 /**
- * The {@link XmlSerializer} of the {@link MimeGlob} class.
+ * {@link MimeGlob}类的{@link XmlSerializer}实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @Immutable
 final class MimeGlobXmlSerializer implements XmlSerializer {
@@ -47,11 +48,17 @@ final class MimeGlobXmlSerializer implements XmlSerializer {
 
   public static final String  CASE_SENSITIVE_ATTRIBUTE  = "case-sensitive";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getRootNodeName() {
     return ROOT_NODE;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeGlob deserialize(final Element root) throws XmlException {
     checkNode(root, ROOT_NODE);
@@ -67,6 +74,9 @@ final class MimeGlobXmlSerializer implements XmlSerializer {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Element serialize(final Document doc, final Object obj)
       throws XmlException {

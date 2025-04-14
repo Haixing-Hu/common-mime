@@ -22,17 +22,23 @@ import ltd.qubit.mime.repository.MimeRepository;
 import ltd.qubit.mime.repository.MimeType;
 
 /**
- * The MIME-type detector based on the pre-built MIME-repository.
+ * 基于预构建MIME仓库的MIME类型检测器。
  *
- * @author Haixing Hu
+ * @author 胡海星
  * @see MimeRepository
  */
 public class RepositoryMimeDetector extends StreamBasedMimeDetector {
 
+  /**
+   * 重建MIME类型仓库。
+   */
   public void rebuildRepository() {
     MimeRepository.getInstance().rebuild();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   @Nonnull
   protected List<String> guessFromFilename(@Nonnull final String filename) {
@@ -49,6 +55,9 @@ public class RepositoryMimeDetector extends StreamBasedMimeDetector {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Nonnull
   @Override
   protected List<String> guessFromContent(@Nonnull final InputStream input)

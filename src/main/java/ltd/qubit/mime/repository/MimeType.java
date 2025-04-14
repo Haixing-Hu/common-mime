@@ -25,11 +25,12 @@ import ltd.qubit.commons.lang.StringUtils;
 import ltd.qubit.commons.text.tostring.ToStringBuilder;
 
 /**
- * The object of this class represents the MIME type of a file.
+ * 此类的对象表示文件的MIME类型。
  *
- * @author Haixing Hu
+ * @author 胡海星
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
+ * @repository
  */
 @NotThreadSafe
 public final class MimeType implements Serializable, CloneableEx<MimeType> {
@@ -53,6 +54,9 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
   List<MimeMagic>       magics;
   List<String>          superTypes;
 
+  /**
+   * 构造一个默认的MIME类型对象。
+   */
   public MimeType() {
     name = StringUtils.EMPTY;
     descriptions = null;
@@ -67,10 +71,20 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     superTypes = null;
   }
 
+  /**
+   * 获取此MIME类型的名称。
+   *
+   * @return 此MIME类型的名称。
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * 获取此MIME类型的描述。
+   *
+   * @return 此MIME类型的描述。基于当前语言环境选择合适的描述。如果没有找到合适的描述，则返回null。
+   */
   public String getDescription() {
     if ((descriptions == null) || descriptions.isEmpty()) {
       return null;
@@ -111,26 +125,56 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     return null;
   }
 
+  /**
+   * 获取此MIME类型的命名空间URI。
+   *
+   * @return 此MIME类型的命名空间URI。
+   */
   public String getNamespaceURI() {
     return namespaceUri;
   }
 
+  /**
+   * 获取此MIME类型的本地名称。
+   *
+   * @return 此MIME类型的本地名称。
+   */
   public String getLocalName() {
     return localName;
   }
 
+  /**
+   * 获取此MIME类型的缩写。
+   *
+   * @return 此MIME类型的缩写。
+   */
   public String getAcronym() {
     return acronym;
   }
 
+  /**
+   * 获取此MIME类型的扩展缩写。
+   *
+   * @return 此MIME类型的扩展缩写。
+   */
   public String getExpandedAcronym() {
     return expandedAcronym;
   }
 
+  /**
+   * 获取此MIME类型的通用图标。
+   *
+   * @return 此MIME类型的通用图标。
+   */
   public String getGenericIcon() {
     return genericIcon;
   }
 
+  /**
+   * 获取此MIME类型的超类型列表。
+   *
+   * @return 此MIME类型的超类型的不可修改列表。如果没有超类型，则返回空列表。
+   */
   public List<String> getSuperTypes() {
     if (superTypes == null) {
       return Collections.emptyList();
@@ -139,6 +183,11 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     }
   }
 
+  /**
+   * 获取此MIME类型的别名列表。
+   *
+   * @return 此MIME类型的别名的不可修改列表。如果没有别名，则返回空列表。
+   */
   public List<String> getAliases() {
     if (aliases == null) {
       return Collections.emptyList();
@@ -147,6 +196,11 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     }
   }
 
+  /**
+   * 获取此MIME类型的Glob模式列表。
+   *
+   * @return 此MIME类型的Glob模式的不可修改列表。如果没有Glob模式，则返回空列表。
+   */
   public List<MimeGlob> getGlobs() {
     if (globs == null) {
       return Collections.emptyList();
@@ -155,6 +209,11 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     }
   }
 
+  /**
+   * 获取此MIME类型的魔数匹配器列表。
+   *
+   * @return 此MIME类型的魔数匹配器的不可修改列表。如果没有魔数匹配器，则返回空列表。
+   */
   public List<MimeMagic> getMagics() {
     if (magics == null) {
       return Collections.emptyList();
@@ -163,6 +222,14 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     }
   }
 
+  /**
+   * 测试指定的文件名是否与此MIME类型匹配。
+   *
+   * @param filename
+   *     要测试的文件名。
+   * @return
+   *     如果指定的文件名与此MIME类型匹配，则返回true；否则返回false。
+   */
   public boolean matches(final String filename) {
     if ((globs == null) || globs.isEmpty()) {
       return false;
@@ -176,6 +243,18 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     }
   }
 
+  /**
+   * 测试指定的内容缓冲区是否与此MIME类型匹配。
+   *
+   * @param buffer
+   *     内容缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @return
+   *     如果指定的内容缓冲区与此MIME类型匹配，则返回true；否则返回false。
+   * @throws IllegalArgumentException
+   *     如果nBytes大于buffer.length。
+   */
   public boolean matches(final byte[] buffer, final int nBytes) {
     if (nBytes > buffer.length) {
       throw new IllegalArgumentException();
@@ -203,6 +282,18 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     return false;
   }
 
+  /**
+   * 获取与指定内容缓冲区匹配的魔数匹配器。
+   *
+   * @param buffer
+   *     内容缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @param bestPriority
+   *     目前最佳匹配的优先级。
+   * @return
+   *     与指定内容缓冲区匹配的魔数匹配器。如果没有匹配，则返回null。
+   */
   MimeMagic getMatchedMagic(final byte[] buffer, final int nBytes,
       int bestPriority) {
     if ((magics != null) && (! magics.isEmpty())) {
@@ -234,11 +325,17 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int hashCode() {
     return name.hashCode();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean equals(final Object obj) {
     if (this == obj) {
@@ -254,6 +351,9 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     return name.equals(other.name);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeType cloneEx() {
     final MimeType cloned = new MimeType();
@@ -271,6 +371,9 @@ public final class MimeType implements Serializable, CloneableEx<MimeType> {
     return cloned;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString() {
     return new ToStringBuilder(this)

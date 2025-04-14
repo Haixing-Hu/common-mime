@@ -24,9 +24,10 @@ import static ltd.qubit.commons.text.xml.DomUtils.getReqSerChildren;
 import static ltd.qubit.commons.text.xml.DomUtils.setOptIntAttr;
 
 /**
- * The {@link XmlSerializer} of the {@link MimeMagic} class.
+ * {@link MimeMagic}类的{@link XmlSerializer}实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @Immutable
 final class MimeMagicXmlSerializer implements XmlSerializer {
@@ -37,11 +38,17 @@ final class MimeMagicXmlSerializer implements XmlSerializer {
 
   public static final String  PRIORITY_ATTRIBUTE        = "priority";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getRootNodeName() {
     return ROOT_NODE;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeMagic deserialize(final Element root) throws XmlException {
     checkNode(root, ROOT_NODE);
@@ -53,6 +60,9 @@ final class MimeMagicXmlSerializer implements XmlSerializer {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Element serialize(final Document doc, final Object obj)
       throws XmlException {

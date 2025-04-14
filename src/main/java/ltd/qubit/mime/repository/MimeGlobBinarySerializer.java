@@ -28,15 +28,19 @@ import static ltd.qubit.commons.io.OutputUtils.writeNullMark;
 import static ltd.qubit.commons.io.OutputUtils.writeString;
 
 /**
- * The {@link BinarySerializer} of the {@link MimeGlob} class.
+ * {@link MimeGlob}类的{@link BinarySerializer}实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @Immutable
 final class MimeGlobBinarySerializer implements BinarySerializer {
 
   public static final MimeGlobBinarySerializer INSTANCE = new MimeGlobBinarySerializer();
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeGlob deserialize(final InputStream in, final boolean allowNull)
       throws IOException {
@@ -55,6 +59,9 @@ final class MimeGlobBinarySerializer implements BinarySerializer {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void serialize(final OutputStream out, final Object obj) throws IOException {
     if (writeNullMark(out, obj)) {

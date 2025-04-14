@@ -26,20 +26,40 @@ import ltd.qubit.commons.util.CommandExecutor;
 import ltd.qubit.mime.repository.MimeRepository;
 import ltd.qubit.mime.repository.MimeType;
 
+/**
+ * 基于系统'file'命令的MIME类型检测器。
+ *
+ * @author 胡海星
+ */
 public class FileCommandMimeDetector extends FileBasedMimeDetector {
 
   public static final String COMMAND = "file --mime-type --brief ${file}";
 
   private final CommandExecutor executor = new CommandExecutor();
 
+  /**
+   * 设置命令执行超时时间。
+   *
+   * @param timeout
+   *     命令执行的超时时间。
+   */
   public void setExecutionTimeout(final Duration timeout) {
     executor.setTimeout(timeout);
   }
 
+  /**
+   * 设置命令执行的工作目录。
+   *
+   * @param workingDirectory
+   *     命令执行的工作目录。
+   */
   public void setWorkingDirectory(final String workingDirectory) {
     executor.setWorkingDirectory(workingDirectory);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Nonnull
   @Override
   protected List<String> guessFromFilename(@Nonnull final String filename) {
@@ -55,6 +75,9 @@ public class FileCommandMimeDetector extends FileBasedMimeDetector {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Nonnull
   @Override
   protected List<String> guessFromContent(@Nonnull final File file)
@@ -74,10 +97,10 @@ public class FileCommandMimeDetector extends FileBasedMimeDetector {
   }
 
   /**
-   * Gets whether the 'file' command is available.
+   * 检查'file'命令是否可用。
    *
    * @return
-   *     {@code true} if the 'file' command is available, {@code false} otherwise.
+   *     如果'file'命令可用，则返回{@code true}，否则返回{@code false}。
    */
   public static boolean isAvailable() {
     return AVAILABLE.get();
@@ -86,10 +109,10 @@ public class FileCommandMimeDetector extends FileBasedMimeDetector {
   private static final Lazy<Boolean> AVAILABLE = Lazy.of(FileCommandMimeDetector::checkAvailable);
 
   /**
-   * Checks if the 'file' command is available.
+   * 检查'file'命令是否可用。
    *
    * @return
-   *     {@code true} if the 'file' command is available, {@code false} otherwise.
+   *     如果'file'命令可用，则返回{@code true}，否则返回{@code false}。
    */
   private static boolean checkAvailable() {
     final String cmd = COMMAND.replace("${file}", ".");

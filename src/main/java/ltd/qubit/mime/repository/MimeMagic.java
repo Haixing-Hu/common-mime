@@ -21,12 +21,12 @@ import ltd.qubit.commons.lang.CloneableEx;
 import ltd.qubit.commons.text.tostring.ToStringBuilder;
 
 /**
- * The object of this class represents the magic of the file content for a
- * certain MIME type.
+ * 此类的对象表示特定MIME类型的文件内容魔数。
  *
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @NotThreadSafe
 public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
@@ -45,11 +45,26 @@ public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
   int priority;
   List<MimeMagicMatcher> matchers;
 
+  /**
+   * 构造一个默认的MIME魔数对象。
+   */
   public MimeMagic() {
     priority = DEFAULT_PRIORITY;
     matchers = new LinkedList<MimeMagicMatcher>();
   }
 
+  /**
+   * 构造一个具有指定匹配器列表和优先级的MIME魔数对象。
+   *
+   * @param matchers
+   *     魔数匹配器列表。
+   * @param priority
+   *     魔数的优先级。
+   * @throws NullPointerException
+   *     如果matchers为null。
+   * @throws IllegalArgumentException
+   *     如果priority不在合法范围内。
+   */
   public MimeMagic(final List<MimeMagicMatcher> matchers, final int priority) {
     if (matchers == null) {
       throw new NullPointerException();
@@ -61,10 +76,20 @@ public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
     this.matchers = matchers;
   }
 
+  /**
+   * 获取此魔数的优先级。
+   *
+   * @return 此魔数的优先级。
+   */
   public int getPriority() {
     return priority;
   }
 
+  /**
+   * 获取此魔数的匹配器数组。
+   *
+   * @return 此魔数的匹配器数组。如果没有匹配器，则返回空数组。
+   */
   public MimeMagicMatcher[] getMatchers() {
     final int n = matchers.size();
     if (n == 0) {
@@ -75,10 +100,9 @@ public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
   }
 
   /**
-   * Returns the maximum number of bytes need to be test by this MIME magic.
+   * 返回此MIME魔数需要测试的最大字节数。
    *
-   * @return The maximum number of bytes need to be test by this MIME magic.
-   *         Used to determine the size of the read buffer.
+   * @return 此MIME魔数需要测试的最大字节数。用于确定读取缓冲区的大小。
    */
   public int getMaxTestBytes() {
     int result = 0;
@@ -91,6 +115,16 @@ public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
     return result;
   }
 
+  /**
+   * 测试指定的缓冲区是否与此MIME魔数匹配。
+   *
+   * @param buffer
+   *     要测试的缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @return
+   *     如果指定的缓冲区与此MIME魔数匹配，则返回true；否则返回false。
+   */
   public boolean matches(final byte[] buffer, final int nBytes) {
     for (final MimeMagicMatcher matcher : matchers) {
       if (matcher.matches(buffer, nBytes)) {
@@ -100,6 +134,9 @@ public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
     return false;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeMagic cloneEx() {
     final MimeMagic result = new MimeMagic();
@@ -110,6 +147,9 @@ public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString() {
     return new ToStringBuilder(this)

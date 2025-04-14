@@ -22,15 +22,17 @@ import ltd.qubit.commons.io.FileUtils;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
- * The abstract base class of file based MIME-type detectors.
+ * 基于文件的MIME类型检测器的抽象基类。
  * <p>
- * A file based MIME-type detector detects the MIME-type of a file by reading
- * the content of a local file, usually by an external program.
+ * 基于文件的MIME类型检测器通过读取本地文件的内容来检测文件的MIME类型，通常通过外部程序实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
  */
 public abstract class FileBasedMimeDetector extends AbstractMimeDetector {
 
+  /**
+   * {@inheritDoc}
+   */
   @Nonnull
   @Override
   protected List<String> guessFromContent(@Nonnull final Path path)
@@ -38,6 +40,9 @@ public abstract class FileBasedMimeDetector extends AbstractMimeDetector {
     return guessFromContent(path.toFile());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Nonnull
   @Override
   protected List<String> guessFromContent(@Nonnull final InputStream input)

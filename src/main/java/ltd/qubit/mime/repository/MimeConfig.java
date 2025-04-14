@@ -14,41 +14,37 @@ import ltd.qubit.commons.config.error.ConfigurationError;
 import static ltd.qubit.commons.config.ConfigUtils.loadXmlConfig;
 
 /**
- * Provides functions to get the configuration of the mime-detect module and
- * defines the names and default values of properties.
+ * 提供获取mime-detect模块配置的函数，并定义属性的名称和默认值。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 public class MimeConfig {
 
   /**
-   * The system property name for the XML resource of the configuration of
-   * mime-detect module.
+   * mime-detect模块配置的XML资源的系统属性名称。
    */
   public static final String PROPERTY_RESOURCE = "ltd.qubit.mime.repository.MimeConfig";
 
   /**
-   * The default name of XML resource of the configuration of mime-detect module.
+   * mime-detect模块配置的XML资源的默认名称。
    */
   public static final String DEFAULT_RESOURCE = "mime-detect.xml";
 
   /**
-   * The static {@link Config} object.
+   * 静态{@link Config}对象。
    */
   private static volatile Config config = null;
 
   /**
-   * Gets the configuration of the mime-detect module.
+   * 获取mime-detect模块的配置。
    * <p>
-   * The function will first try to search in the system's properties to find
-   * the XML resource name of the configuration, if no such system properties
-   * exists, it will use the default XML resource. Then it will try to load the
-   * configuration from the XML file, and return the configuration if success,
-   * or return an empty configuration if failed.
+   * 该函数首先尝试在系统属性中查找配置的XML资源名称，如果不存在此类系统属性，
+   * 将使用默认的XML资源。然后尝试从XML文件加载配置，如果成功则返回配置，
+   * 如果失败则返回一个空配置。
    * </p>
    *
-   * @return the configuration of the mime-detect module, or an empty
-   *         configuration if failed.
+   * @return mime-detect模块的配置，如果失败则返回一个空配置。
    */
   public static Config get() {
     // use the double check locking

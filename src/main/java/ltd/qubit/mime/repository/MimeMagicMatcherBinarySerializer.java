@@ -29,15 +29,19 @@ import static ltd.qubit.commons.io.OutputUtils.writeNullMark;
 import static ltd.qubit.mime.repository.MimeMagicMatcher.TYPE_NAMES;
 
 /**
- * The {@link BinarySerializer} of the {@link MimeMagicMatcher} class.
+ * {@link MimeMagicMatcher}类的{@link BinarySerializer}实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @Immutable
 final class MimeMagicMatcherBinarySerializer implements BinarySerializer {
 
   public static final MimeMagicMatcherBinarySerializer INSTANCE = new MimeMagicMatcherBinarySerializer();
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeMagicMatcher deserialize(final InputStream in,
       final boolean allowNull) throws IOException {
@@ -67,6 +71,9 @@ final class MimeMagicMatcherBinarySerializer implements BinarySerializer {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void serialize(final OutputStream out, final Object obj) throws IOException {
     if (writeNullMark(out, obj)) {

@@ -25,14 +25,14 @@ import ltd.qubit.commons.lang.Hash;
 import ltd.qubit.commons.text.tostring.ToStringBuilder;
 
 /**
- * A {@link MimeMagicMatcher} object represents the matching rule of the
- * MIME type magic.
+ * {@link MimeMagicMatcher}对象表示MIME类型魔数的匹配规则。
  * <p>
- * A MIME type magic can contain multiple matches.
+ * 一个MIME类型魔数可以包含多个匹配项。
  *
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @NotThreadSafe
 public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMagicMatcher> {
@@ -66,17 +66,20 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     XmlSerialization.register(MimeMagicMatcher.class, MimeMagicMatcherXmlSerializer.INSTANCE);
   }
 
-  // the value type of this matcher.
+  // 此匹配器的值类型
   int     type;
-  // search the match in [m_offsetBegin, m_offsetEnd].
+  // 在[m_offsetBegin, m_offsetEnd]范围内搜索匹配项
   int     offsetBegin;
   int     offsetEnd;
-  // value and mask are always stored as a byte array, in big endian.
+  // value和mask总是以大端序的字节数组形式存储
   byte[]  value;
   byte[]  mask;
-  // stores the list of sub-matchers.
+  // 存储子匹配器列表
   List<MimeMagicMatcher> subMatchers;
 
+  /**
+   * 构造一个默认的魔数匹配器。
+   */
   public MimeMagicMatcher() {
     this.type = TYPE_UNKNOWN;
     this.offsetBegin = -1;
@@ -86,26 +89,56 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     this.subMatchers = new LinkedList<MimeMagicMatcher>();
   }
 
+  /**
+   * 获取此匹配器的类型。
+   *
+   * @return 此匹配器的类型。
+   */
   public int getType() {
     return type;
   }
 
+  /**
+   * 获取此匹配器的起始偏移量。
+   *
+   * @return 此匹配器的起始偏移量。
+   */
   public int getOffsetBegin() {
     return offsetBegin;
   }
 
+  /**
+   * 获取此匹配器的结束偏移量。
+   *
+   * @return 此匹配器的结束偏移量。
+   */
   public int getOffsetEnd() {
     return offsetEnd;
   }
 
+  /**
+   * 获取此匹配器的值。
+   *
+   * @return 此匹配器的值。
+   */
   public byte[] getValue() {
     return value;
   }
 
+  /**
+   * 获取此匹配器的掩码。
+   *
+   * @return 此匹配器的掩码。
+   */
   public byte[] getMask() {
     return mask;
   }
 
+  /**
+   * 获取此匹配器的子匹配器数组。
+   *
+   * @return 此匹配器的子匹配器数组。如果没有子匹配器，则返回空数组。
+   */
   public MimeMagicMatcher[] getSubMatchers() {
     final int n = subMatchers.size();
     if (n == 0) {
@@ -116,10 +149,9 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
   }
 
   /**
-   * Returns the maximum number of bytes need to be test by this matcher.
+   * 返回此匹配器需要测试的最大字节数。
    *
-   * @return The maximum number of bytes need to be test by this matcher. Used
-   *         to determine the size of the read buffer.
+   * @return 此匹配器需要测试的最大字节数。用于确定读取缓冲区的大小。
    */
   public int getMaxTestBytes() {
     int result = offsetEnd + value.length;
@@ -132,6 +164,18 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return result;
   }
 
+  /**
+   * 测试指定的缓冲区是否与此匹配器匹配。
+   *
+   * @param buffer
+   *     要测试的缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @return
+   *     如果指定的缓冲区与此匹配器匹配，则返回true；否则返回false。
+   * @throws IllegalArgumentException
+   *     如果nBytes小于0或大于buffer.length。
+   */
   public boolean matches(final byte[] buffer, final int nBytes) {
     if ((nBytes < 0) || (nBytes > buffer.length)) {
       throw new IllegalArgumentException();
@@ -202,6 +246,16 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return result;
   }
 
+  /**
+   * 测试指定的缓冲区是否与此字节类型匹配器匹配。
+   *
+   * @param buffer
+   *     要测试的缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @return
+   *     如果指定的缓冲区与此字节类型匹配器匹配，则返回true；否则返回false。
+   */
   private boolean matchesByte(final byte[] buffer, final int nBytes) {
     if ((mask == null) || (mask.length == 0)) {
       final byte v = value[0];
@@ -224,6 +278,16 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return false;
   }
 
+  /**
+   * 测试指定的缓冲区是否与此字符串类型匹配器匹配。
+   *
+   * @param buffer
+   *     要测试的缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @return
+   *     如果指定的缓冲区与此字符串类型匹配器匹配，则返回true；否则返回false。
+   */
   private boolean matchesString(final byte[] buffer, final int nBytes) {
     if ((mask == null) || (mask.length == 0)) {
       int end = nBytes - value.length;
@@ -263,6 +327,18 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return false;
   }
 
+  /**
+   * 测试指定的缓冲区是否与此16位整数类型匹配器匹配。
+   *
+   * @param buffer
+   *     要测试的缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @param reverseOrder
+   *     是否需要反转字节顺序。
+   * @return
+   *     如果指定的缓冲区与此16位整数类型匹配器匹配，则返回true；否则返回false。
+   */
   private boolean matchesInt16(final byte[] buffer, final int nBytes, final boolean reverseOrder) {
     if ((mask == null) || (mask.length == 0)) {
       final byte v0;
@@ -314,6 +390,18 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return false;
   }
 
+  /**
+   * 测试指定的缓冲区是否与此32位整数类型匹配器匹配。
+   *
+   * @param buffer
+   *     要测试的缓冲区。
+   * @param nBytes
+   *     缓冲区中要测试的字节数。
+   * @param reverseOrder
+   *     是否需要反转字节顺序。
+   * @return
+   *     如果指定的缓冲区与此32位整数类型匹配器匹配，则返回true；否则返回false。
+   */
   private boolean matchesInt32(final byte[] buffer, final int nBytes, final boolean reverseOrder) {
     if ((mask == null) || (mask.length == 0)) {
       final byte v0;
@@ -387,6 +475,9 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return false;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int hashCode() {
     final int multiplier = 191;
@@ -400,6 +491,9 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return code;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean equals(final Object obj) {
     if (this == obj) {
@@ -419,6 +513,9 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
           && Equality.equals(subMatchers, other.subMatchers);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeMagicMatcher cloneEx() {
     final MimeMagicMatcher result = new MimeMagicMatcher();
@@ -433,6 +530,9 @@ public final class MimeMagicMatcher implements Serializable, CloneableEx<MimeMag
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String toString() {
     return new ToStringBuilder(this)

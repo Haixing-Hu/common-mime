@@ -36,9 +36,10 @@ import static ltd.qubit.commons.text.xml.DomUtils.getReqString;
 import static ltd.qubit.commons.text.xml.DomUtils.getReqStringAttr;
 
 /**
- * The {@link XmlSerializer} of the {@link MimeType} class.
+ * {@link MimeType}类的{@link XmlSerializer}实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @Immutable
 final class MimeTypeXmlSerializer implements XmlSerializer {
@@ -87,11 +88,17 @@ final class MimeTypeXmlSerializer implements XmlSerializer {
 
   public static final char    OFFSET_RANGE_SEPARATOR    = ':';
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getRootNodeName() {
     return ROOT_NODE;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeType deserialize(final Element root) throws XmlException {
     checkNode(root, ROOT_NODE);
@@ -162,6 +169,9 @@ final class MimeTypeXmlSerializer implements XmlSerializer {
     return result;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Element serialize(final Document doc, final Object obj) throws XmlException {
     final MimeType mime;

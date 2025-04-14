@@ -41,9 +41,10 @@ import static ltd.qubit.mime.repository.MimeMagicMatcher.TYPE_STRING;
 import static ltd.qubit.mime.repository.MimeMagicMatcher.TYPE_UNKNOWN;
 
 /**
- * The {@link XmlSerializer} of the {@link MimeMagicMatcher} class.
+ * {@link MimeMagicMatcher}类的{@link XmlSerializer}实现。
  *
- * @author Haixing Hu
+ * @author 胡海星
+ * @repository
  */
 @Immutable
 final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
@@ -64,11 +65,17 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
 
   public static final char OFFSET_RANGE_SEPARATOR       = ':';
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String getRootNodeName() {
     return ROOT_NODE;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MimeMagicMatcher deserialize(final Element root) throws XmlException {
     checkNode(root, ROOT_NODE);
@@ -86,6 +93,16 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     return result;
   }
 
+  /**
+   * 解析魔数匹配器的类型。
+   *
+   * @param root
+   *     XML元素根节点。
+   * @param result
+   *     要填充的魔数匹配器对象。
+   * @throws XmlException
+   *     如果解析过程中出现错误。
+   */
   private void parseType(final Element root, final MimeMagicMatcher result)
       throws XmlException {
     final String typeAttr = getReqStringAttr(root, TYPE_ATTRIBUTE, true, false);
@@ -102,6 +119,16 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     }
   }
 
+  /**
+   * 解析魔数匹配器的偏移量。
+   *
+   * @param root
+   *     XML元素根节点。
+   * @param result
+   *     要填充的魔数匹配器对象。
+   * @throws XmlException
+   *     如果解析过程中出现错误。
+   */
   private void parseOffset(final Element root, final MimeMagicMatcher result)
       throws XmlException {
     final String offsetAttr = getReqStringAttr(root, OFFSET_ATTRIBUTE, true,
@@ -136,6 +163,16 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     }
   }
 
+  /**
+   * 解析魔数匹配器的值。
+   *
+   * @param root
+   *     XML元素根节点。
+   * @param result
+   *     要填充的魔数匹配器对象。
+   * @throws XmlException
+   *     如果解析过程中出现错误。
+   */
   private void parseValue(final Element root, final MimeMagicMatcher result)
       throws XmlException {
     final String valueAttr = getReqStringAttr(root, VALUE_ATTRIBUTE, true, false);
@@ -201,6 +238,16 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     }
   }
 
+  /**
+   * 解析魔数匹配器的掩码。
+   *
+   * @param root
+   *     XML元素根节点。
+   * @param result
+   *     要填充的魔数匹配器对象。
+   * @throws XmlException
+   *     如果解析过程中出现错误。
+   */
   private void parseMask(final Element root, final MimeMagicMatcher result)
       throws XmlException {
     result.mask = null;
@@ -297,6 +344,16 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     }
   }
 
+  /**
+   * 解析魔数匹配器的子匹配器。
+   *
+   * @param root
+   *     XML元素根节点。
+   * @param result
+   *     要填充的魔数匹配器对象。
+   * @throws XmlException
+   *     如果解析过程中出现错误。
+   */
   private void parseSubmatchers(final Element root,
       final MimeMagicMatcher result) throws XmlException {
     result.subMatchers.clear();
@@ -311,7 +368,9 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     }
   }
 
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Element serialize(final Document doc, final Object obj) throws XmlException {
     final MimeMagicMatcher matcher;
@@ -347,6 +406,16 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     return root;
   }
 
+  /**
+   * 将字节数组转换为字符串表示形式。
+   *
+   * @param array
+   *     要转换的字节数组。
+   * @param type
+   *     值的类型。
+   * @return
+   *     字节数组的字符串表示形式。
+   */
   private static String bytesToString(final byte[] array, final int type) {
     final StringBuilder builder = new StringBuilder();
     final NumberFormat nf = new NumberFormat();
@@ -386,6 +455,5 @@ final class MimeMagicMatcherXmlSerializer implements XmlSerializer {
     }
     return builder.toString();
   }
-
 
 }
