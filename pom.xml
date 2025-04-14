@@ -20,7 +20,7 @@
   <artifactId>common-mime</artifactId>
   <version>${common-mime.version}${build.suffix}</version>
   <packaging>jar</packaging>
-  <name>MIME-type Detection Module</name>
+  <name>MIME类型检测模块</name>
   <url>${project.home.url}/${project.artifactId}</url>
 
 	<dependencies>
