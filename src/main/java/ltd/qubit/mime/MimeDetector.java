@@ -238,6 +238,8 @@ public interface MimeDetector {
 
   /**
    * 仅通过文件内容检测文件的MIME类型。
+   * <p>
+   * 此方法通过分析文件URI指向的内容来推断其MIME类型，而不是依赖于文件名或扩展名。
    *
    * @param uri
    *     要检测的文件URI。
@@ -350,7 +352,7 @@ public interface MimeDetector {
   /**
    * 检测文件的MIME类型。
    * <p>
-   * 此函数与调用<code>detect(path, null, false)</code>具有相同效果。
+   * 此函数与调用<code>detect(path, null, isAlwaysCheckMagicByDefault())</code>具有相同效果。
    *
    * @param path
    *     要检测的文件路径。
@@ -362,7 +364,7 @@ public interface MimeDetector {
    */
   @Nullable
   default String detect(@Nonnull final Path path) throws IOException {
-    return detect(path, null, false);
+    return detect(path, null, isAlwaysCheckMagicByDefault());
   }
 
   /**
@@ -425,15 +427,14 @@ public interface MimeDetector {
   /**
    * 检测文件的MIME类型。
    * <p>
-   * 此函数与调用<code>detect(url, null, isAlwaysCheckMagic())</code>具有相同效果。
+   * 此函数与调用<code>detect(url, null, isAlwaysCheckMagicByDefault())</code>具有相同效果。
    *
    * @param url
-   *     the URL of the file to be detected.
+   *     要检测的文件URL。
    * @return
-   *     the canonical name of the detected MIME-type of the file, or
-   *     {@code null} if the MIME-type cannot be detected.
+   *     检测到的文件MIME类型的规范名称，如果无法检测到MIME类型，则返回{@code null}。
    * @throws IOException
-   *     if any I/O error occurs.
+   *     如果发生任何I/O错误。
    * @see #detect(URL, String, boolean)
    */
   @Nullable
@@ -501,15 +502,14 @@ public interface MimeDetector {
   /**
    * 检测文件的MIME类型。
    * <p>
-   * 此函数与调用<code>detect(uri, null, isAlwaysCheckMagic())</code>具有相同效果。
+   * 此函数与调用<code>detect(uri, null, isAlwaysCheckMagicByDefault())</code>具有相同效果。
    *
    * @param uri
-   *     the URI of the file to be detected.
+   *     要检测的文件URI。
    * @return
-   *     the canonical name of the detected MIME-type of the file, or
-   *     {@code null} if the MIME-type cannot be detected.
+   *     检测到的文件MIME类型的规范名称，如果无法检测到MIME类型，则返回{@code null}。
    * @throws IOException
-   *     if any I/O error occurs.
+   *     如果发生任何I/O错误。
    * @see #detect(URI, String, boolean)
    */
   @Nullable
@@ -611,7 +611,7 @@ public interface MimeDetector {
    * <ul>
    * <li>首先尝试从文件名扩展名检测可能的MIME类型。</li>
    * <li>如果从文件名扩展名中检测到一个且仅有一个候选MIME类型，且参数{@code alwaysCheckMagic}为
-   * {@code true}，则函数返回该MIME类型。</li>
+   * {@code false}，则函数返回该MIME类型。</li>
    * <li>否则，函数将尝试从文件内容中检测可能的MIME类型。</li>
    * <li>如果从文件名扩展名和文件内容中都没有检测到候选MIME类型，则函数返回{@code null}。</li>
    * <li>如果从文件名扩展名中没有检测到候选MIME类型，但从文件内容中检测到一个或多个候选MIME类型，
@@ -649,7 +649,7 @@ public interface MimeDetector {
   /**
    * 检测文件的MIME类型。
    * <p>
-   * 此函数与调用<code>detect(content, filename, isAlwaysCheckMagic())</code>具有相同效果。
+   * 此函数与调用<code>detect(content, filename, isAlwaysCheckMagicByDefault())</code>具有相同效果。
    *
    * @param content
    *     要检测的文件内容的字节数组。
@@ -676,7 +676,7 @@ public interface MimeDetector {
    * <ul>
    * <li>首先尝试从文件名扩展名检测可能的MIME类型。</li>
    * <li>如果从文件名扩展名中检测到一个且仅有一个候选MIME类型，且参数{@code alwaysCheckMagic}为
-   * {@code true}，则函数返回该MIME类型。</li>
+   * {@code false}，则函数返回该MIME类型。</li>
    * <li>否则，函数将尝试从文件内容中检测可能的MIME类型。</li>
    * <li>如果从文件名扩展名和文件内容中都没有检测到候选MIME类型，则函数返回{@code null}。</li>
    * <li>如果从文件名扩展名中没有检测到候选MIME类型，但从文件内容中检测到一个或多个候选MIME类型，

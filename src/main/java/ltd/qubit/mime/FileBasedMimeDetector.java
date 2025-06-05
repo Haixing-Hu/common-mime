@@ -47,7 +47,7 @@ public abstract class FileBasedMimeDetector extends AbstractMimeDetector {
   @Override
   protected List<String> guessFromContent(@Nonnull final InputStream input)
       throws IOException {
-    // copy the content of the input stream to a temporary file
+    // 将输入流的内容复制到临时文件
     final File tempFile = FileUtils.getTempFile("FileBasedMimeDetector", ".tmp");
     try {
       Files.copy(input, tempFile.toPath(), REPLACE_EXISTING);

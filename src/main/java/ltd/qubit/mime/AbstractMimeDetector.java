@@ -361,18 +361,16 @@ public abstract class AbstractMimeDetector implements MimeDetector {
     } else {
       fromExtension = guessFromFilename(theFilename);
     }
-    // if there is only one candidate, and we don't need to always check the
-    // file magic, then return the only candidate directly.
+    // 如果只有一个候选MIME类型，并且不需要总是检查文件魔术数字，则直接返回唯一的候选类型
     if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
       logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
       final String result = fromExtension.get(0);
       logger.debug("Use the MIME-type detected from the filename extension: {}", result);
       return result;
     }
-    // try to guess the MIME-type from the file content
+    // 尝试从文件内容中猜测MIME类型
     final List<String> fromContent = guessFromContentFunctor.apply(arg);
-    // now we try to combine the results from the filename extension and the
-    // file content.
+    // 现在尝试合并从文件名扩展名和文件内容中得到的结果
     return mergeResults(fromExtension, fromContent);
   }
 
@@ -448,21 +446,19 @@ public abstract class AbstractMimeDetector implements MimeDetector {
     } else {
       fromExtension = guessFromFilename(theFilename);
     }
-    // if there is only one candidate, and we don't need to always check the
-    // file magic, then return the only candidate directly.
+    // 如果只有一个候选MIME类型，并且不需要总是检查文件魔术数字，则直接返回唯一的候选类型
     if ((fromExtension.size() == 1) && (!alwaysCheckMagic)) {
       logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
       final String result = fromExtension.get(0);
       logger.debug("Use the MIME-type detected from the filename extension: {}", result);
       return result;
     }
-    // try to guess the MIME-type from the file content
+    // 尝试从文件内容中猜测MIME类型
     final List<String> fromContent;
     try (final InputStream in = openStreamFunctor.apply(arg)) {
       fromContent = guessFromContent(in);
     }
-    // now we try to combine the results from the filename extension and the
-    // file content.
+    // 现在尝试合并从文件名扩展名和文件内容中得到的结果
     return mergeResults(fromExtension, fromContent);
   }
 
@@ -521,8 +517,7 @@ public abstract class AbstractMimeDetector implements MimeDetector {
    */
   protected final String mergeResults(final List<String> fromExtension,
       final List<String> fromContent) {
-    // now we try to combine the results from the filename extension and the
-    // file content.
+    // 现在尝试合并从文件名扩展名和文件内容中得到的结果
     if (fromExtension.isEmpty()) {
       if (fromContent.isEmpty()) {
         logger.error("No MIME-type detected from the filename extension nor from the file content.");
@@ -543,8 +538,7 @@ public abstract class AbstractMimeDetector implements MimeDetector {
     } else {
       logger.debug("All possible MIME-types detected from the file extension are: {}", fromExtension);
       logger.debug("All possible MIME-types detected from the file content are: {}", fromContent);
-      // if there are both candidates from the filename extension and the file
-      // content, then return the common candidates.
+      // 如果从文件名扩展名和文件内容中都有候选MIME类型，则返回共同的候选类型
       String result = fromExtension
           .stream()
           .filter(fromContent::contains)
