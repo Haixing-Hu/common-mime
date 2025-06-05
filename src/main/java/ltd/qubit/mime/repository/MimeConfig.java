@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package ltd.qubit.mime.repository;
 
+import ltd.qubit.commons.concurrent.Lazy;
 import ltd.qubit.commons.config.Config;
 import ltd.qubit.commons.config.error.ConfigurationError;
 
@@ -32,9 +33,15 @@ public class MimeConfig {
   public static final String DEFAULT_RESOURCE = "mime-detect.xml";
 
   /**
-   * 静态{@link Config}对象。
+   * 静态 {@link Config} 对象的懒加载实例。
    */
-  private static volatile Config config = null;
+  private static final Lazy<Config> lazyConfig = Lazy.of(() -> {
+    final Config config = loadXmlConfig(PROPERTY_RESOURCE, DEFAULT_RESOURCE, MimeConfig.class);
+    if (config.isEmpty()) {
+      throw new ConfigurationError("Failed to load the configuration of mime-detect module.");
+    }
+    return config;
+  });
 
   /**
    * 获取mime-detect模块的配置。
@@ -47,17 +54,6 @@ public class MimeConfig {
    * @return mime-detect模块的配置，如果失败则返回一个空配置。
    */
   public static Config get() {
-    // use the double check locking
-    if (config == null) {
-      synchronized (MimeConfig.class) {
-        if (config == null) {
-          config = loadXmlConfig(PROPERTY_RESOURCE, DEFAULT_RESOURCE, MimeConfig.class);
-          if (config.isEmpty()) {
-            throw new ConfigurationError("Failed to load the configuration of mime-detect module.");
-          }
-        }
-      }
-    }
-    return config;
+    return lazyConfig.get();
   }
 }

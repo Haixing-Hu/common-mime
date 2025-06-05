@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.w3c.dom.NodeList;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import ltd.qubit.commons.concurrent.Lazy;
 import ltd.qubit.commons.config.Config;
 import ltd.qubit.commons.config.error.XmlConfigurationError;
 import ltd.qubit.commons.io.FileUtils;
@@ -287,7 +289,10 @@ public class MimeRepository implements Serializable {
 
   private static final VersionSignature SIGNATURE = new VersionSignature(serialVersionUID, VERSION);
 
-  private static volatile MimeRepository instance = null;
+  private static final Lazy<MimeRepository> lazyInstance = Lazy.of(() -> {
+    final Config config = MimeConfig.get();
+    return new MimeRepository(config);
+  });
 
   /**
    * 获取MIME类型存储库的单例实例。
@@ -295,16 +300,7 @@ public class MimeRepository implements Serializable {
    * @return MIME类型存储库的单例实例。
    */
   public static MimeRepository getInstance() {
-    // use the double-checked locking trick
-    if (instance == null) {
-      synchronized (MimeRepository.class) {
-        if (instance == null) {
-          final Config config = MimeConfig.get();
-          instance = new MimeRepository(config);
-        }
-      }
-    }
-    return instance;
+    return lazyInstance.get();
   }
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
