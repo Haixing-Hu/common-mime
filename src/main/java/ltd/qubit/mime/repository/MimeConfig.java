@@ -18,7 +18,6 @@ import static ltd.qubit.commons.config.ConfigUtils.loadXmlConfig;
  * 提供获取mime-detect模块配置的函数，并定义属性的名称和默认值。
  *
  * @author 胡海星
- * @repository
  */
 public class MimeConfig {
 

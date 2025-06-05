@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package ltd.qubit.mime.repository;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,11 +27,11 @@ import ltd.qubit.commons.text.tostring.ToStringBuilder;
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
  * @author 胡海星
- * @repository
  */
 @NotThreadSafe
 public final class MimeMagic implements Serializable, CloneableEx<MimeMagic> {
 
+  @Serial
   private static final long serialVersionUID = -6497936348325783502L;
 
   public static final int   MIN_PRIORITY                = 0;

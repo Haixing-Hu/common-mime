@@ -15,7 +15,6 @@ import java.util.List;
  * 提供MIME类型存储库实现使用的实用函数。
  *
  * @author 胡海星
- * @repository
  */
 class Utils {
 

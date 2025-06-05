@@ -27,7 +27,6 @@ import static ltd.qubit.commons.text.xml.DomUtils.setOptIntAttr;
  * {@link MimeMagic}类的{@link XmlSerializer}实现。
  *
  * @author 胡海星
- * @repository
  */
 @Immutable
 final class MimeMagicXmlSerializer implements XmlSerializer {

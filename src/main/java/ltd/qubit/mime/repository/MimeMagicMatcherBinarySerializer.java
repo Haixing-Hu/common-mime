@@ -32,7 +32,6 @@ import static ltd.qubit.mime.repository.MimeMagicMatcher.TYPE_NAMES;
  * {@link MimeMagicMatcher}类的{@link BinarySerializer}实现。
  *
  * @author 胡海星
- * @repository
  */
 @Immutable
 final class MimeMagicMatcherBinarySerializer implements BinarySerializer {

@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package ltd.qubit.mime.repository;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -30,12 +31,12 @@ import ltd.qubit.commons.text.tostring.ToStringBuilder;
  * @author 胡海星
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
- * @repository
  */
 @NotThreadSafe
 public final class MimeType implements Serializable, CloneableEx<MimeType> {
 
-  private static final long   serialVersionUID          = -6109152808063707682L;
+  @Serial
+  private static final long serialVersionUID          = -6109152808063707682L;
 
   static {
     BinarySerialization.register(MimeType.class, MimeTypeBinarySerializer.INSTANCE);

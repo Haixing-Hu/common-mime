@@ -16,11 +16,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -65,11 +65,11 @@ import static ltd.qubit.commons.lang.Argument.requirePositive;
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
  * @author 胡海星
- * @repository
  */
 @NotThreadSafe
 public class MimeRepository implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = - 6880339145050773602L;
 
   /**
@@ -580,7 +580,7 @@ public class MimeRepository implements Serializable {
    * 通过输入流的内容检测MIME类型。
    * <p>
    * 注意：此方法将不会关闭指定的输入流。
-   * 
+   *
    * @param markSupportedInput
    *     支持标记的输入流，包含要检测其MIME类型的内容。注意：此输入流必须支持标记，并且此方法
    *     将在读取内容之前标记输入流，读取内容后重置输入流。它不会关闭输入流。

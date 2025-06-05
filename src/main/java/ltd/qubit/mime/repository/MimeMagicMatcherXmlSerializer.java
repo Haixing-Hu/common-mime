@@ -44,7 +44,6 @@ import static ltd.qubit.mime.repository.MimeMagicMatcher.TYPE_UNKNOWN;
  * {@link MimeMagicMatcher}类的{@link XmlSerializer}实现。
  *
  * @author 胡海星
- * @repository
  */
 @Immutable
 final class MimeMagicMatcherXmlSerializer implements XmlSerializer {

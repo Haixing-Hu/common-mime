@@ -33,7 +33,6 @@ import static ltd.qubit.mime.repository.MimeGlob.MIN_WEIGHT;
  * {@link MimeGlob}类的{@link XmlSerializer}实现。
  *
  * @author 胡海星
- * @repository
  */
 @Immutable
 final class MimeGlobXmlSerializer implements XmlSerializer {

@@ -31,7 +31,6 @@ import static ltd.qubit.commons.io.OutputUtils.writeString;
  * {@link MimeType}类的{@link BinarySerializer}实现。
  *
  * @author 胡海星
- * @repository
  */
 @Immutable
 final class MimeTypeBinarySerializer implements BinarySerializer {

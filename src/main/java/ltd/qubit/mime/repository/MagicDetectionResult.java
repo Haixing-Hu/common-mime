@@ -15,7 +15,6 @@ import java.util.List;
  * 魔数检测结果类，用于存储基于文件内容魔数匹配的MIME类型检测结果。
  *
  * @author 胡海星
- * @repository
  */
 class MagicDetectionResult {
 

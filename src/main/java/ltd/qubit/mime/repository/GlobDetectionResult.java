@@ -15,7 +15,6 @@ import java.util.List;
  * Glob模式检测结果类，用于存储基于文件名Glob模式匹配的MIME类型检测结果。
  *
  * @author 胡海星
- * @repository
  */
 class GlobDetectionResult {
 

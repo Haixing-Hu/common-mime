@@ -8,13 +8,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 package ltd.qubit.mime.repository;
 
+import java.io.Serial;
+
 /**
  * 当遇到不支持的MIME类型时抛出的异常。
  *
  * @author 胡海星
- * @repository
  */
 public class UnsupportedMimeTypeException extends Exception {
+
+  @Serial
   private static final long serialVersionUID = 6361443562769805095L;
 
   private final MimeType mimeType;

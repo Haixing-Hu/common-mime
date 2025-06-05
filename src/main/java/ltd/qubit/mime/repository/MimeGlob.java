@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 package ltd.qubit.mime.repository;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,11 +32,11 @@ import ltd.qubit.commons.text.tostring.ToStringBuilder;
  * @see <a href='http://standards.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.19.html'>Shared MIME-info Database</a>
  * @see <a href='http://www.freedesktop.org/wiki/Software/shared-mime-info'>shared-mime-info</a>
  * @author 胡海星
- * @repository
  */
 @ThreadSafe
 public final class MimeGlob implements Serializable, CloneableEx<MimeGlob> {
 
+  @Serial
   private static final long serialVersionUID = 7956131472186019862L;
 
   public static final int     MIN_WEIGHT                = 0;

@@ -39,7 +39,6 @@ import static ltd.qubit.commons.text.xml.DomUtils.getReqStringAttr;
  * {@link MimeType}类的{@link XmlSerializer}实现。
  *
  * @author 胡海星
- * @repository
  */
 @Immutable
 final class MimeTypeXmlSerializer implements XmlSerializer {

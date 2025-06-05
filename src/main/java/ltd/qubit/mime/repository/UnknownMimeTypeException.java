@@ -8,14 +8,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 package ltd.qubit.mime.repository;
 
+import java.io.Serial;
+
 /**
  * 当遇到未知MIME类型时抛出的异常。
  *
  * @author 胡海星
- * @repository
  */
 public class UnknownMimeTypeException extends Exception {
 
+  @Serial
   private static final long serialVersionUID = -790336086363139440L;
 
   private final String mimeTypeName;
